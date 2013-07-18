@@ -1,8 +1,10 @@
 Zenject: Dependency Injection Framework for Unity3D
 =====================================
 
-This project started based on this implementation. The following articles may be helpful:
+This project started based on [this](https://github.com/sebas77/Lightweight-IoC-Container-for-Unity3D) implementation. The following articles may be helpful:
+
 http://blog.sebaslab.com/ioc-container-for-unity3d-part-1/
+
 http://blog.sebaslab.com/ioc-container-for-unity3d-part-2/
 
 Examples and more documentation forthcoming.
