@@ -1,18 +1,11 @@
-Lightweight IoC Container for Unity3D
+Zenject: Dependency Injection Framework for Unity3D
 =====================================
 
-Lightweight IoC container c# implementation compatible with Unity3D.
-More info at:
-
+This project started based on this implementation. The following articles may be helpful:
 http://blog.sebaslab.com/ioc-container-for-unity3d-part-1/
-
 http://blog.sebaslab.com/ioc-container-for-unity3d-part-2/
 
-After have downloaded the source code, please download the asset following this link:
-
-https://github.com/downloads/sebas77/Lightweight-IoC-Container-for-Unity3D/ioccontainerexampleasset.unitypackage
-
- Copyright 2012 Sebastiano Mandalà
+Examples and more documentation forthcoming.
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
