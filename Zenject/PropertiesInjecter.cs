@@ -20,59 +20,40 @@ namespace Zenject
         {
             ZenUtil.Assert(injectable != null);
 
-            var contract = injectable.GetType();
-
-            var members = contract.FindMembers(MemberTypes.Property | MemberTypes.Field,
-                                               BindingFlags.FlattenHierarchy | BindingFlags.Public |
-                                               BindingFlags.NonPublic | BindingFlags.SetProperty |
-                                               BindingFlags.Instance,
-                                               null, null);
+            var members = ZenUtil.GetMemberDependencies(injectable.GetType());
 
             foreach (var member in members)
             {
-                var attrs = member.GetCustomAttributes(typeof(InjectAttribute), true);
+                var context = new ResolveContext() { target = injectable.GetType(), name = member.Name };
 
-                InjectAttribute injectAttr = null;
+                var injectAttr = ZenUtil.GetInjectAttribute(member);
+                ZenUtil.Assert(injectAttr != null);
 
-                foreach (var attr in attrs)
+                if (member is FieldInfo)
                 {
-                    if (attr.GetType() == typeof(InjectAttribute))
-                    {
-                        injectAttr = attr as InjectAttribute;
-                        break;
-                    }
-                }
+                    var info = member as FieldInfo;
+                    var valueObj = ResolveField(info.FieldType, context);
 
-                if (injectAttr != null)
-                {
-                    var context = new ResolveContext() { target = injectable.GetType(), name = member.Name };
-
-                    if (member is FieldInfo)
-                    {
-                        var info = member as FieldInfo;
-                        var valueObj = ResolveField(info.FieldType, context);
-
-                        ZenUtil.Assert(valueObj != null || injectAttr.optional,
-                                    "Unable to find field with type '" + info.FieldType +
-                                    "' when injecting dependencies into '" + injectable + "'");
-
-                        info.SetValue(injectable, valueObj);
-                    }
-                    else if (member is PropertyInfo)
-                    {
-                        var info = member as PropertyInfo;
-                        var valueObj = ResolveField(info.PropertyType, context);
-
-                        ZenUtil.Assert(valueObj != null || injectAttr.optional,
-                                "Unable to find property with type '" + info.PropertyType +
+                    ZenUtil.Assert(valueObj != null || injectAttr.optional,
+                                "Unable to find field with type '" + info.FieldType +
                                 "' when injecting dependencies into '" + injectable + "'");
 
-                        info.SetValue(injectable, valueObj, null);
-                    }
-                    else
-                    {
-                        ZenUtil.Assert(false);
-                    }
+                    info.SetValue(injectable, valueObj);
+                }
+                else if (member is PropertyInfo)
+                {
+                    var info = member as PropertyInfo;
+                    var valueObj = ResolveField(info.PropertyType, context);
+
+                    ZenUtil.Assert(valueObj != null || injectAttr.optional,
+                            "Unable to find property with type '" + info.PropertyType +
+                            "' when injecting dependencies into '" + injectable + "'");
+
+                    info.SetValue(injectable, valueObj, null);
+                }
+                else
+                {
+                    ZenUtil.Assert(false);
                 }
             }
         }

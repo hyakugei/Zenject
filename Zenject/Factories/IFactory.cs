@@ -19,19 +19,13 @@ namespace Zenject
 
         protected object Create(Type concreteType, params object[] constructorArgs)
         {
-            var constructors = concreteType.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
+            ConstructorInfo method;
+            var parameterInfos = ZenUtil.GetConstructorDependencies(concreteType, out method);
 
-            ZenUtil.Assert(constructors.Length > 0,
-                    "Could not find constructor for type '" + concreteType + "' when creating dependencies");
-            ZenUtil.Assert(constructors.Length == 1,
-                    "More than one constructor found for type '" + concreteType + "' when creating dependencies");
-
-            var method = constructors[0];
             var parameters = new List<object>();
-
             var extrasList = new List<object>(constructorArgs);
 
-            foreach (var paramInfo in method.GetParameters())
+            foreach (var paramInfo in parameterInfos)
             {
                 var found = false;
                 var desiredType = paramInfo.ParameterType;

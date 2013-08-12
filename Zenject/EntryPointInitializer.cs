@@ -19,12 +19,12 @@ namespace Zenject
         [Inject]
         public List<IEntryPoint> _entryPoints;
 
-        Kernel _kernel;
+        IKernel _kernel;
 
         List<IEntryPoint> _entryPointsEarly = new List<IEntryPoint>();
         List<IEntryPoint> _entryPointsLate = new List<IEntryPoint>();
 
-        public EntryPointInitializer(List<IEntryPoint> entryPoints, Kernel kernel)
+        public EntryPointInitializer(List<IEntryPoint> entryPoints, IKernel kernel)
         {
             _kernel = kernel;
             _entryPoints = entryPoints;

@@ -1,3 +1,4 @@
+using System;
 namespace Zenject
 {
     public abstract class ProviderInternal : IProvider
@@ -14,7 +15,8 @@ namespace Zenject
             _condition = condition;
         }
 
-        public abstract object Get();
+        public abstract object GetInstance();
+        public abstract Type GetInstanceType();
 
         public virtual void OnRemoved()
         {

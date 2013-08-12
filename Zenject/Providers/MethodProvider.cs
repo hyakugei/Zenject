@@ -1,3 +1,4 @@
+using System;
 namespace Zenject
 {
     public class MethodProvider<T> : ProviderInternal
@@ -13,7 +14,12 @@ namespace Zenject
             _container = container;
         }
 
-        public override object Get()
+        public override Type GetInstanceType()
+        {
+            return typeof(T);
+        }
+
+        public override object GetInstance()
         {
             var obj = _method(_container);
             ZenUtil.Assert(obj != null);

@@ -5,7 +5,7 @@ namespace Zenject
     public class DependencyRootStandard : IDependencyRoot
     {
         [Inject]
-        public UnityKernel kernel;
+        public IKernel kernel;
 
         [Inject]
         public EntryPointInitializer appInitializer;

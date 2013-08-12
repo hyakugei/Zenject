@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Zenject
 {
@@ -13,7 +14,12 @@ namespace Zenject
             _objFactory = container.Resolve<GameObjectFactory>();
         }
 
-        public override object Get()
+        public override Type GetInstanceType()
+        {
+            return typeof(T);
+        }
+
+        public override object GetInstance()
         {
             var obj = _objFactory.Build(_template);
 

@@ -11,6 +11,7 @@ namespace Zenject
             void DecRefCount();
 
             object GetInstance();
+            Type GetInstanceType();
         }
 
         private class SingletonLazyCreator<T> : ISingletonLazyCreator
@@ -39,6 +40,11 @@ namespace Zenject
                 {
                     _map.Remove<T>();
                 }
+            }
+
+            public Type GetInstanceType()
+            {
+                return typeof(T);
             }
 
             public object GetInstance()
@@ -70,7 +76,12 @@ namespace Zenject
                 _creator.DecRefCount();
             }
 
-            public override object Get()
+            public override Type GetInstanceType()
+            {
+                return _creator.GetInstanceType();
+            }
+
+            public override object GetInstance()
             {
                 return _creator.GetInstance();
             }

@@ -1,4 +1,5 @@
-﻿namespace Zenject
+﻿using System;
+namespace Zenject
 {
     public class TransientProvider<T> : ProviderInternal
     {
@@ -9,7 +10,12 @@
             _factory = new Factory<T>(container);
         }
 
-        public override object Get()
+        public override Type GetInstanceType()
+        {
+            return typeof(T);
+        }
+
+        public override object GetInstance()
         {
             var obj = _factory.Create();
             ZenUtil.Assert(obj != null);

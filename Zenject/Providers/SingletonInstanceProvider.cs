@@ -12,7 +12,12 @@ namespace Zenject
             _instance = instance;
         }
 
-        public override object Get()
+        public override Type GetInstanceType()
+        {
+            return _instance.GetType();
+        }
+
+        public override object GetInstance()
         {
             return _instance;
         }

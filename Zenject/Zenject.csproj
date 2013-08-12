@@ -59,8 +59,10 @@
     <Compile Include="IDependencyRoot.cs" />
     <Compile Include="IEntryPoint.cs" />
     <Compile Include="IInstaller.cs" />
+    <Compile Include="IKernel.cs" />
     <Compile Include="InjectAttribute.cs" />
-    <Compile Include="Kernel.cs" />
+    <Compile Include="ITickable.cs" />
+    <Compile Include="ObjectGraphVisualizer.cs" />
     <Compile Include="PropertiesInjecter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\GameObjectProvider.cs" />

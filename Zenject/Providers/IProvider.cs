@@ -1,7 +1,9 @@
-﻿namespace Zenject
+﻿using System;
+namespace Zenject
 {
     public interface IProvider
     {
-        object Get();
+        object GetInstance();
+        Type GetInstanceType();
     }
 }

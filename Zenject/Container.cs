@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Text;
 
 namespace Zenject
 {
@@ -66,7 +68,7 @@ namespace Zenject
             }
             _lookupsInProgress.Add(contract);
 
-            var objects = (from provider in _providers[contract] where provider.GetCondition()(context) select provider.Get()).ToList();
+            var objects = (from provider in _providers[contract] where provider.GetCondition()(context) select provider.GetInstance()).ToList();
 
             _lookupsInProgress.Remove(contract);
             return objects;
@@ -83,6 +85,19 @@ namespace Zenject
 
             // All many-dependencies are optional, return an empty list
             return CreateGenericList(contract, new object[] {});
+        }
+
+        public List<Type> ResolveTypeMany(Type contract)
+        {
+            if (_providers.ContainsKey(contract))
+            {
+                // TODO: fix this to work with providers that have conditions
+                var context = new ResolveContext();
+
+                return (from provider in _providers[contract] where provider.GetCondition()(context) select provider.GetInstanceType()).ToList();
+            }
+
+            return new List<Type> {};
         }
 
         public TContract Resolve<TContract>()
@@ -147,6 +162,94 @@ namespace Zenject
             }
 
             _providers.Remove(contract);
+        }
+
+        public List<Type> GetDependencyContracts<TContract>()
+        {
+            return GetDependencyContracts(typeof(TContract));
+        }
+
+        public List<Type> GetDependencyContracts(Type contract)
+        {
+            var dependencies = new List<Type>();
+
+            foreach (var param in ZenUtil.GetConstructorDependencies(contract))
+            {
+                dependencies.Add(param.ParameterType);
+            }
+
+            foreach (var member in ZenUtil.GetMemberDependencies(contract))
+            {
+                if (member is FieldInfo)
+                {
+                    var info = member as FieldInfo;
+                    dependencies.Add(info.FieldType);
+                }
+                else if (member is PropertyInfo)
+                {
+                    var info = member as PropertyInfo;
+                    dependencies.Add(info.PropertyType);
+                }
+                else
+                {
+                    ZenUtil.Assert(false);
+                }
+            }
+
+            return dependencies;
+        }
+
+        public Dictionary<Type, List<Type>> CalculateObjectGraph<TRoot>()
+        {
+            return CalculateObjectGraph(typeof(TRoot));
+        }
+
+        public Dictionary<Type, List<Type>> CalculateObjectGraph(Type rootContract)
+        {
+            var map = new Dictionary<Type, List<Type>>();
+            var types = ResolveTypeMany(rootContract);
+            ZenUtil.Assert(types.Count == 1);
+            var rootType = types[0];
+
+            map.Add(rootType, new List<Type>());
+            AddToObjectGraph(rootType, map);
+
+            return map;
+        }
+
+        void AddToObjectGraph(Type type, Dictionary<Type, List<Type>> map)
+        {
+            var dependList = map[type];
+
+            foreach (var contractType in GetDependencyContracts(type))
+            {
+                List<Type> dependTypes;
+
+                if (contractType.FullName.StartsWith("System.Collections.Generic.List"))
+                {
+                    var subTypes = contractType.GetGenericArguments();
+                    ZenUtil.Assert(subTypes.Length == 1);
+
+                    var subType = subTypes[0];
+                    dependTypes = ResolveTypeMany(subType);
+                }
+                else
+                {
+                    dependTypes = ResolveTypeMany(contractType);
+                    ZenUtil.Assert(dependTypes.Count <= 1);
+                }
+
+                foreach (var dependType in dependTypes)
+                {
+                    dependList.Add(dependType);
+
+                    if (!map.ContainsKey(dependType))
+                    {
+                        map.Add(dependType, new List<Type>());
+                        AddToObjectGraph(dependType, map);
+                    }
+                }
+            }
         }
     }
 }

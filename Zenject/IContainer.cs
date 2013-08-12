@@ -22,5 +22,11 @@ namespace Zenject
 
         void Release<TContract>();
         void Release(Type contract);
+
+        List<Type> GetDependencyContracts<TContract>();
+        List<Type> GetDependencyContracts(Type contract);
+
+        Dictionary<Type, List<Type>> CalculateObjectGraph<TRoot>();
+        Dictionary<Type, List<Type>> CalculateObjectGraph(Type contract);
     }
 }

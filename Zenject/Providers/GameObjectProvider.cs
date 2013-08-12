@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Zenject
@@ -14,7 +15,12 @@ namespace Zenject
             _container = container;
         }
 
-        public override object Get()
+        public override Type GetInstanceType()
+        {
+            return typeof(T);
+        }
+
+        public override object GetInstance()
         {
             if (_instance == null)
             {
