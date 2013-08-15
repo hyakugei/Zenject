@@ -25,8 +25,3 @@
 
 /*.csproj
 /*.sln
-
-/Assets/Assemblies/*.dll
-/Assets/Assemblies/*.pdb
-/Assets/Assemblies/Editor/*.dll
-/Assets/Assemblies/Editor/*.pdb
