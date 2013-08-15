@@ -12,7 +12,8 @@ namespace Asteroids
         float _elapsedTime;
         GameObjectInstantiator _gameObjectCreator;
         GameObject _shipBroken;
-
+		GameObject _shipExplosion;
+		
         public ShipStateDead(Settings settings, Ship ship, GameObjectInstantiator gameObjectCreator)
             : base(ship)
         {
@@ -23,6 +24,12 @@ namespace Asteroids
         public override void Start()
         {
             _ship.GetComponentInChildren<MeshRenderer>().enabled = false;
+			_ship.GetComponentInChildren<ParticleEmitter>().emit = false;
+			_ship.audio.Play();
+			_shipExplosion = _gameObjectCreator.Instantiate(_settings.explosionTamplate);
+			
+			 _shipExplosion.transform.position = _ship.Position;
+				
             _shipBroken = _gameObjectCreator.Instantiate(_settings.brokenTemplate);
 
             _shipBroken.transform.position = _ship.Position;
@@ -41,6 +48,7 @@ namespace Asteroids
         public override void Stop()
         {
             _ship.GetComponentInChildren<MeshRenderer>().enabled = true;
+			_ship.GetComponentInChildren<ParticleEmitter>().emit = true;
             GameObject.Destroy(_shipBroken);
         }
 
@@ -52,6 +60,7 @@ namespace Asteroids
         public class Settings
         {
             public GameObject brokenTemplate;
+			public GameObject explosionTamplate;
             public float explosionForce;
         }
     }

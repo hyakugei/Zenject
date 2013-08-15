@@ -9,7 +9,8 @@ namespace Asteroids
     public class Ship : MonoBehaviour
     {
         public MeshRenderer MeshRenderer;
-
+		public ParticleEmitter ParticleEmitter;
+		
         [Inject]
         public ShipStateFactory _stateFactory;
 
