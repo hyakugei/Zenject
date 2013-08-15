@@ -17,7 +17,7 @@ namespace Zenject
         private class SingletonLazyCreator<T> : ISingletonLazyCreator
         {
             private int _referenceCount;
-            private FactoryBase<T> _factory;
+            private IFactory<T> _factory;
             private T _instance;
             private SingletonProviderMap _map;
 

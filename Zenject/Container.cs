@@ -19,7 +19,7 @@ namespace Zenject
             _singletonMap = new SingletonProviderMap(this);
 
             Bind<IContainer>().AsSingle(this);
-            Bind<GameObjectFactory>().AsSingle();
+            Bind<GameObjectInstantiator>().AsSingle();
         }
 
         public Binder<TContract> Bind<TContract>()

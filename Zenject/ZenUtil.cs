@@ -8,14 +8,27 @@ using UnityEngine;
 
 namespace Zenject
 {
+    public enum AssertHandleMethod
+    {
+        LogAndContinue,
+        Exception, // For running tests
+    }
+
     public class ZenUtil
     {
+        private static AssertHandleMethod _handleMethod = AssertHandleMethod.LogAndContinue;
+
+        public static void SetAssertHandleMethod(AssertHandleMethod handleMethod)
+        {
+            _handleMethod = handleMethod;
+        }
+
         [Conditional("UNITY_EDITOR")]
         public static void Assert(bool condition)
         {
             if (!condition)
             {
-                UnityEngine.Debug.LogError("Hit Assert in Zenject!");
+                FailAssert("");
             }
         }
 
@@ -24,7 +37,19 @@ namespace Zenject
         {
             if (!condition)
             {
-                UnityEngine.Debug.LogError("Hit Assert in Zenject! " + message);
+                FailAssert(message);
+            }
+        }
+
+        [Conditional("UNITY_EDITOR")]
+        static void FailAssert(string msg)
+        {
+            msg = "Hit Assert in Zenject! " + msg;
+            UnityEngine.Debug.LogError(msg);
+
+            if (_handleMethod == AssertHandleMethod.Exception)
+            {
+                throw new InvalidOperationException(msg);
             }
         }
 

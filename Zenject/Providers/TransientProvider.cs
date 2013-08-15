@@ -3,7 +3,7 @@ namespace Zenject
 {
     public class TransientProvider<T> : ProviderInternal
     {
-        private FactoryBase<T> _factory;
+        private IFactory<T> _factory;
 
         public TransientProvider(IContainer container)
         {

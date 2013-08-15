@@ -2,64 +2,42 @@ using UnityEngine;
 
 namespace Zenject
 {
-    public class GameObjectFactory
+    public class GameObjectFactory<TContract, TConcrete> : IFactory<TContract>
     {
-        private IContainer _container;
+        GameObject _template;
 
-        public GameObjectFactory(IContainer container)
+        public GameObjectFactory(IContainer container, GameObject template)
         {
+            _template = template;
+        }
+
+        public TContract Create(params object[] constructorArgs)
+        {
+            return default(TContract);
+        }
+    }
+
+    public class GameObjectFactory<TContract> : IFactory<TContract> where TContract : Component
+    {
+        IContainer _container;
+        GameObject _template;
+        GameObjectInstantiator _instantiator;
+
+        public GameObjectFactory(IContainer container, GameObject template)
+        {
+            _template = template;
             _container = container;
+            _instantiator = _container.Resolve<GameObjectInstantiator>();
         }
 
-        public GameObject Build(string resourceName)
+        public TContract Create(params object[] constructorArgs)
         {
-            return Build((GameObject) Resources.Load(resourceName));
-        }
+            var gameObj = _instantiator.Instantiate(_template);
 
-        public GameObject Build(string resourceName, Vector3 position, Quaternion rotation)
-        {
-            return Build((GameObject) Resources.Load(resourceName), position, rotation);
-        }
+            var component = gameObj.GetComponent<TContract>();
+            ZenUtil.Assert(component != null, "Could not find component '" + typeof(TContract).Name + "' when creating game object from prefab");
 
-        public GameObject Build(GameObject template)
-        {
-            return Build(template, Vector3.zero, Quaternion.identity);
-        }
-
-        public GameObject Build(GameObject template, Vector3 position, Quaternion rotation)
-        {
-            var gameObj = (GameObject) Object.Instantiate(template, position, rotation);
-
-            gameObj.SetActive(true);
-
-            var components = gameObj.GetComponentsInChildren<MonoBehaviour>();
-
-            var injecter = new PropertiesInjecter(_container);
-            foreach (var t in components)
-            {
-                ZenUtil.Assert(t != null, "Undefined monobehaviour in template '" + template.name + "'");
-                injecter.Inject(t);
-            }
-
-            return gameObj;
-        }
-
-        public T Build<T>(GameObject template) where T : Component
-        {
-            var gameObj = Build(template);
-            var script = gameObj.GetComponent<T>();
-            ZenUtil.Assert(script != null);
-
-            return script;
-        }
-
-        public T Build<T>(GameObject template, Vector3 position, Quaternion rotation) where T : Component
-        {
-            var gameObj = Build(template, position, rotation);
-            var script = gameObj.GetComponent<T>();
-            ZenUtil.Assert(script != null);
-
-            return script;
+            return component;
         }
     }
 }

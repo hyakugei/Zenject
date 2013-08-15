@@ -3,16 +3,14 @@ using UnityEngine;
 
 namespace Zenject
 {
-    public class GameObjectSingletonProviderFromPrefab<T> : ProviderInternal
+    public class GameObjectSingletonProviderFromPrefab<T> : ProviderInternal where T : Component
     {
-        private GameObject _template;
-        private GameObjectFactory _objFactory;
-        private object _instance;
+        IFactory<T> _factory;
+        object _instance;
 
         public GameObjectSingletonProviderFromPrefab(IContainer container, GameObject template)
         {
-            _template = template;
-            _objFactory = container.Resolve<GameObjectFactory>();
+            _factory = new GameObjectFactory<T>(container, template);
         }
 
         public override Type GetInstanceType()
@@ -24,11 +22,7 @@ namespace Zenject
         {
             if (_instance == null)
             {
-                var obj = _objFactory.Build(_template);
-
-                // We don't use the generic version here to avoid duplicate generic arguments to binder
-                _instance = obj.GetComponent(typeof(T));
-
+                _instance = _factory.Create();
                 ZenUtil.Assert(_instance != null);
             }
 
