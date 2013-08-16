@@ -61,7 +61,7 @@ namespace Asteroids
             if (Position.x > _level.Right + Scale && IsMovingInDirection(Vector3.right))
             {
                 transform.SetX(_level.Left - Scale);
-            }
+			}
             else if (Position.x < _level.Left - Scale && IsMovingInDirection(-Vector3.right))
             {
                 transform.SetX(_level.Right + Scale);
@@ -73,7 +73,8 @@ namespace Asteroids
             else if (Position.y > _level.Top + Scale && IsMovingInDirection(Vector3.up))
             {
                 transform.SetY(_level.Bottom - Scale);
-            }
+			}
+			transform.RotateAround(transform.position, Vector3.up, 30 * Time.deltaTime);
         }
 
         bool IsMovingInDirection(Vector3 dir)
