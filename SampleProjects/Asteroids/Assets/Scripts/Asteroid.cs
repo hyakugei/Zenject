@@ -10,6 +10,9 @@ namespace Asteroids
         [Inject]
         public LevelHelper _level { set; private get; }
 
+        [Inject]
+        public Settings _settings { set; private get; }
+
         public Vector3 Position
         {
             get
@@ -19,6 +22,18 @@ namespace Asteroids
             set
             {
                 transform.position = value;
+            }
+        }
+
+        public float Mass
+        {
+            get
+            {
+                return rigidbody.mass;
+            }
+            set
+            {
+                rigidbody.mass = value;
             }
         }
 
@@ -53,7 +68,19 @@ namespace Asteroids
 
         public void Update()
         {
+            LimitSpeed();
             CheckForTeleport();
+        }
+
+        void LimitSpeed()
+        {
+            var speed = rigidbody.velocity.magnitude;
+
+            if (speed > _settings.maxSpeed)
+            {
+                var dir = rigidbody.velocity / speed;
+                rigidbody.velocity = dir * _settings.maxSpeed;
+            }
         }
 
         void CheckForTeleport()
@@ -80,6 +107,13 @@ namespace Asteroids
         bool IsMovingInDirection(Vector3 dir)
         {
             return Vector3.Dot(dir, rigidbody.velocity) > 0;
+        }
+
+        [Serializable]
+        public class Settings
+        {
+            public float massScaleFactor;
+            public float maxSpeed;
         }
     }
 }

@@ -10,5 +10,6 @@ namespace Asteroids
         public ShipStateWaitingToStart.Settings shipStarting;
 
         public AsteroidSpawner.Settings asteroidSpawner;
+        public Asteroid.Settings asteroid;
     }
 }

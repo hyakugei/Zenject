@@ -12,8 +12,8 @@ namespace Asteroids
         float _elapsedTime;
         GameObjectInstantiator _gameObjectCreator;
         GameObject _shipBroken;
-		GameObject _shipExplosion;
-		
+        GameObject _shipExplosion;
+
         public ShipStateDead(Settings settings, Ship ship, GameObjectInstantiator gameObjectCreator)
             : base(ship)
         {
@@ -23,15 +23,14 @@ namespace Asteroids
 
         public override void Start()
         {
-            _ship.GetComponentInChildren<MeshRenderer>().enabled = false;
-			_ship.GetComponentInChildren<ParticleEmitter>().emit = false;
-			_ship.audio.Play();
-			_shipExplosion = _gameObjectCreator.Instantiate(_settings.explosionTamplate);
-			
-			 _shipExplosion.transform.position = _ship.Position;
-				
-            _shipBroken = _gameObjectCreator.Instantiate(_settings.brokenTemplate);
+            _ship.MeshRenderer.enabled = false;
+            _ship.ParticleEmitter.emit = false;
+            _ship.audio.Play();
 
+            _shipExplosion = _gameObjectCreator.Instantiate(_settings.explosionTemplate);
+            _shipExplosion.transform.position = _ship.Position;
+
+            _shipBroken = _gameObjectCreator.Instantiate(_settings.brokenTemplate);
             _shipBroken.transform.position = _ship.Position;
             _shipBroken.transform.rotation = _ship.Rotation;
 
@@ -47,8 +46,10 @@ namespace Asteroids
 
         public override void Stop()
         {
-            _ship.GetComponentInChildren<MeshRenderer>().enabled = true;
-			_ship.GetComponentInChildren<ParticleEmitter>().emit = true;
+            _ship.MeshRenderer.enabled = true;
+            _ship.ParticleEmitter.emit = true;
+
+            GameObject.Destroy(_shipExplosion);
             GameObject.Destroy(_shipBroken);
         }
 
@@ -60,7 +61,7 @@ namespace Asteroids
         public class Settings
         {
             public GameObject brokenTemplate;
-			public GameObject explosionTamplate;
+			public GameObject explosionTemplate;
             public float explosionForce;
         }
     }

@@ -15,6 +15,7 @@ namespace Asteroids
             container.Bind<ShipStateWaitingToStart.Settings>().AsSingle(settings.shipStarting);
 
             container.Bind<AsteroidSpawner.Settings>().AsSingle(settings.asteroidSpawner);
+            container.Bind<Asteroid.Settings>().AsSingle(settings.asteroid);
         }
     }
 }

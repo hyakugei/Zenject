@@ -7,5 +7,6 @@ namespace Asteroids
     public enum EInitPriority
     {
         GameController,
+        AsteroidSpawner,
     }
 }

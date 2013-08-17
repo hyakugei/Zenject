@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Collections;
 using Zenject;
 using Random=UnityEngine.Random;
+using System.Linq;
 
 namespace Asteroids
 {
@@ -16,6 +17,7 @@ namespace Asteroids
         LevelHelper _level;
         bool _started;
         List<Asteroid> _asteroids = new List<Asteroid>();
+        Queue<AsteroidAttributes> _cachedAttributes = new Queue<AsteroidAttributes>();
 
         public int TickPriority
         {
@@ -38,19 +40,70 @@ namespace Asteroids
         {
             Util.Assert(!_started);
 
+            ResetAll();
+            GenerateRandomAttributes();
+
+            for (int i = 0; i < _settings.startingSpawns; i++)
+            {
+                SpawnNext();
+            }
+
+            _started = true;
+        }
+
+        // Generate the full list of size and speeds so that we can maintain an approximate average
+        // this way we don't get wildly different difficulties each time the game is run
+        // For example, if we just chose speed randomly each time we spawned an asteroid, in some
+        // cases that might result in the first set of asteroids all going at max speed, or min speed
+        void GenerateRandomAttributes()
+        {
+            Util.Assert(_cachedAttributes.Count == 0);
+
+            var speedTotal = 0.0f;
+            var sizeTotal = 0.0f;
+
+            for (int i = 0; i < _settings.maxSpawns; i++)
+            {
+                var sizePx = Random.Range(0.0f, 1.0f);
+                var speed = Random.Range(_settings.minSpeed, _settings.maxSpeed);
+
+                _cachedAttributes.Enqueue(new AsteroidAttributes {
+                    SizePx = sizePx,
+                    InitialSpeed = speed,
+                });
+
+                speedTotal += speed;
+                sizeTotal += sizePx;
+            }
+
+            var desiredAverageSpeed = (_settings.minSpeed + _settings.maxSpeed) * 0.5f;
+            var desiredAverageSize = 0.5f;
+
+            var averageSize = sizeTotal / _settings.maxSpawns;
+            var averageSpeed = speedTotal / _settings.maxSpawns;
+
+            var speedScaleFactor = desiredAverageSpeed / averageSpeed;
+            var sizeScaleFactor = desiredAverageSize / averageSize;
+
+            foreach (var attributes in _cachedAttributes)
+            {
+                attributes.SizePx *= sizeScaleFactor;
+                attributes.InitialSpeed *= speedScaleFactor;
+            }
+
+            Util.Assert(Mathf.Approximately(_cachedAttributes.Average(x => x.InitialSpeed), desiredAverageSpeed));
+            Util.Assert(Mathf.Approximately(_cachedAttributes.Average(x => x.SizePx), desiredAverageSize));
+        }
+
+        void ResetAll()
+        {
             foreach (var asteroid in _asteroids)
             {
                 GameObject.Destroy(asteroid.gameObject);
             }
 
             _asteroids.Clear();
-
-            for (int i = 0; i < _settings.startingSpawns; i++)
-            {
-                SpawnAsteroid();
-            }
-
-            _started = true;
+            _cachedAttributes.Clear();
         }
 
         public void Stop()
@@ -68,34 +121,29 @@ namespace Asteroids
                 if (_timeToNextSpawn < 0 && _asteroids.Count < _settings.maxSpawns)
                 {
                     _timeToNextSpawn = _timeIntervalBetweenSpawns;
-                    SpawnAsteroid();
+                    SpawnNext();
                 }
             }
         }
 
-        void SpawnAsteroid()
+        void SpawnNext()
         {
             var asteroid = _asteroidFactory.Create();
 
-            asteroid.Scale = GetRandomScale();
+            var attributes = _cachedAttributes.Dequeue();
+
+            asteroid.Scale = Mathf.Lerp(_settings.minScale, _settings.maxScale, attributes.SizePx);
+            asteroid.Mass = Mathf.Lerp(_settings.minMass, _settings.maxMass, attributes.SizePx);
             asteroid.Position = GetRandomStartPosition(asteroid.Scale);
-            asteroid.Velocity = GetRandomVelocity();
+            asteroid.Velocity = GetRandomDirection() * attributes.InitialSpeed;
 
             _asteroids.Add(asteroid);
         }
 
-        float GetRandomScale()
-        {
-            return Random.Range(_settings.minScale, _settings.maxScale);
-        }
-
-        Vector3 GetRandomVelocity()
+        Vector3 GetRandomDirection()
         {
             var theta = Random.Range(0, Mathf.PI * 2.0f);
-            var dir = new Vector3(Mathf.Cos(theta), Mathf.Sin(theta), 0);
-            var speed = Random.Range(_settings.minSpeed, _settings.maxSpeed);
-
-            return dir * speed;
+            return new Vector3(Mathf.Cos(theta), Mathf.Sin(theta), 0);
         }
 
         Vector3 GetRandomStartPosition(float scale)
@@ -142,7 +190,17 @@ namespace Asteroids
 
             public int startingSpawns;
             public int maxSpawns;
+
             public float maxSpawnTime;
+
+            public float maxMass;
+            public float minMass;
+        }
+
+        class AsteroidAttributes
+        {
+            public float SizePx;
+            public float InitialSpeed;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Asteroids
     {
         public MeshRenderer MeshRenderer;
 		public ParticleEmitter ParticleEmitter;
-		
+
         [Inject]
         public ShipStateFactory _stateFactory;
 
