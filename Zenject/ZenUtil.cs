@@ -6,53 +6,10 @@ using System.Text;
 using System.Diagnostics;
 using UnityEngine;
 
-namespace Zenject
+namespace ModestTree.Zenject
 {
-    public enum AssertHandleMethod
-    {
-        LogAndContinue,
-        Exception, // For running tests
-    }
-
     public class ZenUtil
     {
-        private static AssertHandleMethod _handleMethod = AssertHandleMethod.LogAndContinue;
-
-        public static void SetAssertHandleMethod(AssertHandleMethod handleMethod)
-        {
-            _handleMethod = handleMethod;
-        }
-
-        [Conditional("UNITY_EDITOR")]
-        public static void Assert(bool condition)
-        {
-            if (!condition)
-            {
-                FailAssert("");
-            }
-        }
-
-        [Conditional("UNITY_EDITOR")]
-        public static void Assert(bool condition, string message)
-        {
-            if (!condition)
-            {
-                FailAssert(message);
-            }
-        }
-
-        [Conditional("UNITY_EDITOR")]
-        static void FailAssert(string msg)
-        {
-            msg = "Hit Assert in Zenject! " + msg;
-            UnityEngine.Debug.LogError(msg);
-
-            if (_handleMethod == AssertHandleMethod.Exception)
-            {
-                throw new InvalidOperationException(msg);
-            }
-        }
-
         public static InjectAttribute GetInjectAttribute(MemberInfo member)
         {
             var attrs = member.GetCustomAttributes(typeof(InjectAttribute), true);
@@ -101,9 +58,9 @@ namespace Zenject
         {
             var constructors = concreteType.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
 
-            ZenUtil.Assert(constructors.Length > 0,
+            Util.Assert(constructors.Length > 0,
                     "Could not find constructor for type '" + concreteType + "' when creating dependencies");
-            ZenUtil.Assert(constructors.Length == 1,
+            Util.Assert(constructors.Length == 1,
                     "More than one constructor found for type '" + concreteType + "' when creating dependencies");
 
             method = constructors[0];

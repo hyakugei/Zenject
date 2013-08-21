@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 
-namespace Zenject.Test
+namespace ModestTree.Zenject.Test
 {
     public class TestExceptionsWithContainer : TestWithContainer
     {
@@ -12,14 +12,14 @@ namespace Zenject.Test
         public override void Setup()
         {
             base.Setup();
-            ZenUtil.SetAssertHandleMethod(AssertHandleMethod.Exception);
+            Util.SetAssertHandleMethod(AssertHandleMethod.Exception);
         }
 
         [TearDown]
         public override void Destroy()
         {
             base.Destroy();
-            ZenUtil.SetAssertHandleMethod(AssertHandleMethod.LogAndContinue);
+            Util.SetAssertHandleMethod(AssertHandleMethod.LogAndContinue);
         }
     }
 

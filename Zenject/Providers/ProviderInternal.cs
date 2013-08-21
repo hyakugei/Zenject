@@ -1,5 +1,5 @@
 using System;
-namespace Zenject
+namespace ModestTree.Zenject
 {
     public abstract class ProviderInternal : IProvider
     {

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
-using Zenject;
+using ModestTree.Zenject;
 using Random=UnityEngine.Random;
 using System.Linq;
 

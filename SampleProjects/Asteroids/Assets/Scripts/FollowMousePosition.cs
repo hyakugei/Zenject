@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Zenject;
+using ModestTree.Zenject;
 
 public class FollowMousePosition : MonoBehaviour 
 {

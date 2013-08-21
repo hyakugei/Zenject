@@ -52,6 +52,10 @@
     <Compile Include="TestWithContainer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\MTMEDITOR\Source\Assemblies\Core\Core.csproj">
+      <Project>{32863e59-fe0f-42ef-9409-a5fb84b18e9f}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Zenject\Zenject.csproj">
       <Project>{a9c52dcc-aea4-4c4d-8852-003cc8f2680e}</Project>
       <Name>Zenject</Name>

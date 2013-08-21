@@ -1,5 +1,5 @@
 using System;
-namespace Zenject
+namespace ModestTree.Zenject
 {
     public class MethodProvider<T> : ProviderInternal
     {
@@ -22,7 +22,7 @@ namespace Zenject
         public override object GetInstance()
         {
             var obj = _method(_container);
-            ZenUtil.Assert(obj != null);
+            Util.Assert(obj != null);
             return obj;
         }
     }

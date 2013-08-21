@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Zenject
+namespace ModestTree.Zenject
 {
     public class DependencyRootStandard : IDependencyRoot
     {

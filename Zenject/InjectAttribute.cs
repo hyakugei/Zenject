@@ -1,6 +1,6 @@
 using System;
 
-namespace Zenject
+namespace ModestTree.Zenject
 {
     [Flags]
     public enum InjectFlag

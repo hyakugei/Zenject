@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Zenject
+namespace ModestTree.Zenject
 {
     // Lazily create singleton providers and ensure that only one exists for every concrete type
 
@@ -33,19 +33,19 @@ namespace Zenject
 
         public BindingConditionSetter AsSingle()
         {
-            ZenUtil.Assert(!typeof(TContract).IsSubclassOf(typeof(MonoBehaviour)), "Should not use AsSingle for Monobehaviours (when binding type " + typeof(TContract).Name + "), you probably want AsSingleFromPrefab or AsSingleGameObject");
+            Util.Assert(!typeof(TContract).IsSubclassOf(typeof(MonoBehaviour)), "Should not use AsSingle for Monobehaviours (when binding type " + typeof(TContract).Name + "), you probably want AsSingleFromPrefab or AsSingleGameObject");
             return Bind(_singletonMap.CreateProvider<TContract>());
         }
 
         public BindingConditionSetter AsSingle<TConcrete>() where TConcrete : TContract
         {
-            ZenUtil.Assert(!typeof(TConcrete).IsSubclassOf(typeof(MonoBehaviour)), "Should not use AsSingle for Monobehaviours (when binding type "+ typeof(TConcrete).Name +"), you probably want AsSingleFromPrefab or AsSingleGameObject");
+            Util.Assert(!typeof(TConcrete).IsSubclassOf(typeof(MonoBehaviour)), "Should not use AsSingle for Monobehaviours (when binding type "+ typeof(TConcrete).Name +"), you probably want AsSingleFromPrefab or AsSingleGameObject");
             return Bind(_singletonMap.CreateProvider<TConcrete>());
         }
 
         public BindingConditionSetter AsSingle<TConcrete>(TConcrete instance) where TConcrete : TContract
         {
-            ZenUtil.Assert(instance != null);
+            Util.Assert(instance != null);
             return Bind(new SingletonInstanceProvider(instance));
         }
 
@@ -55,14 +55,14 @@ namespace Zenject
         // Note: Here we assume that the contract is a component on the given prefab
         public BindingConditionSetter AsSingleFromPrefab<TConcrete>(GameObject template) where TConcrete : Component
         {
-            ZenUtil.Assert(template != null, "Received null template while binding type '" + typeof(TConcrete).Name + "'");
+            Util.Assert(template != null, "Received null template while binding type '" + typeof(TConcrete).Name + "'");
             return Bind(new GameObjectSingletonProviderFromPrefab<TConcrete>(_container, template));
         }
 
         // Note: Here we assume that the contract is a component on the given prefab
         public BindingConditionSetter AsTransientFromPrefab<TConcrete>(GameObject template) where TConcrete : Component
         {
-            ZenUtil.Assert(template != null);
+            Util.Assert(template != null);
             return Bind(new GameObjectTransientProviderFromPrefab<TConcrete>(_container, template));
         }
 
@@ -74,14 +74,14 @@ namespace Zenject
         // Creates a new game object and adds the given type as a new component on it
         public BindingConditionSetter AsSingleGameObject(string name)
         {
-            ZenUtil.Assert(typeof(TContract).IsSubclassOf(typeof(MonoBehaviour)), "Expected MonoBehaviour derived type when binding type '" + typeof(TContract).Name + "'");
+            Util.Assert(typeof(TContract).IsSubclassOf(typeof(MonoBehaviour)), "Expected MonoBehaviour derived type when binding type '" + typeof(TContract).Name + "'");
             return Bind(new GameObjectSingletonProvider<TContract>(_container, name));
         }
 
         // Creates a new game object and adds the given type as a new component on it
         public BindingConditionSetter AsSingleGameObject<TConcrete>(string name) where TConcrete : MonoBehaviour
         {
-            ZenUtil.Assert(typeof(TConcrete).IsSubclassOf(typeof(MonoBehaviour)), "Expected MonoBehaviour derived type when binding type '" + typeof(TConcrete).Name + "'");
+            Util.Assert(typeof(TConcrete).IsSubclassOf(typeof(MonoBehaviour)), "Expected MonoBehaviour derived type when binding type '" + typeof(TConcrete).Name + "'");
             return Bind(new GameObjectSingletonProvider<TConcrete>(_container, name));
         }
     }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace Zenject
+namespace ModestTree.Zenject
 {
     // Iterate over fields/properties on a given object and inject any with the [Inject] attribute
     class PropertiesInjecter
@@ -18,7 +18,7 @@ namespace Zenject
 
         public void Inject(object injectable)
         {
-            ZenUtil.Assert(injectable != null);
+            Util.Assert(injectable != null);
 
             var members = ZenUtil.GetMemberDependencies(injectable.GetType());
 
@@ -27,14 +27,14 @@ namespace Zenject
                 var context = new ResolveContext() { target = injectable.GetType(), name = member.Name };
 
                 var injectAttr = ZenUtil.GetInjectAttribute(member);
-                ZenUtil.Assert(injectAttr != null);
+                Util.Assert(injectAttr != null);
 
                 if (member is FieldInfo)
                 {
                     var info = member as FieldInfo;
                     var valueObj = ResolveField(info.FieldType, context);
 
-                    ZenUtil.Assert(valueObj != null || injectAttr.optional,
+                    Util.Assert(valueObj != null || injectAttr.optional,
                                 "Unable to find field with type '" + info.FieldType +
                                 "' when injecting dependencies into '" + injectable + "'");
 
@@ -45,7 +45,7 @@ namespace Zenject
                     var info = member as PropertyInfo;
                     var valueObj = ResolveField(info.PropertyType, context);
 
-                    ZenUtil.Assert(valueObj != null || injectAttr.optional,
+                    Util.Assert(valueObj != null || injectAttr.optional,
                             "Unable to find property with type '" + info.PropertyType +
                             "' when injecting dependencies into '" + injectable + "'");
 
@@ -53,7 +53,7 @@ namespace Zenject
                 }
                 else
                 {
-                    ZenUtil.Assert(false);
+                    Util.Assert(false);
                 }
             }
         }

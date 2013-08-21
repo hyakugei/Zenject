@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-namespace Zenject
+namespace ModestTree.Zenject
 {
     public class UnityKernel : MonoBehaviour, IKernel
     {
@@ -15,8 +15,8 @@ namespace Zenject
 
         public void AddTask(ITickable task)
         {
-            ZenUtil.Assert(!_queuedTasks.Contains(task), "Duplicate task added to kernel: " + task.GetType().FullName);
-            ZenUtil.Assert(!_tasks.Any(t => ReferenceEquals(t.Tickable, task)), "Duplicate task added to kernel");
+            Util.Assert(!_queuedTasks.Contains(task), "Duplicate task added to kernel: " + task.GetType().FullName);
+            Util.Assert(!_tasks.Any(t => ReferenceEquals(t.Tickable, task)), "Duplicate task added to kernel");
 
             // Wait until next frame to add the task, otherwise whether it gets updated
             // on the current frame depends on where in the update order it was added
@@ -28,11 +28,11 @@ namespace Zenject
         {
             var matches = _tasks.Where(i => ReferenceEquals(i.Tickable, task));
 
-            ZenUtil.Assert(matches.Count() == 1);
+            Util.Assert(matches.Count() == 1);
 
             var info = matches.First();
 
-            ZenUtil.Assert(!info.IsRemoved, "Tried to remove a task twice");
+            Util.Assert(!info.IsRemoved, "Tried to remove a task twice");
             info.IsRemoved = true;
         }
 
@@ -67,7 +67,7 @@ namespace Zenject
 
                 if (info.IsRemoved)
                 {
-                    Debug.Log("Removed task '" + info.Tickable.GetType().ToString() + "'");
+                    Log.Debug("Removed task '" + info.Tickable.GetType().ToString() + "'");
                     _tasks.Remove(node);
                 }
 

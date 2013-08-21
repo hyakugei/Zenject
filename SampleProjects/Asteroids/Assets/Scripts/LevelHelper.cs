@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 using System.Collections;
-using Zenject;
+using ModestTree.Zenject;
 using Random=UnityEngine.Random;
 
 namespace Asteroids

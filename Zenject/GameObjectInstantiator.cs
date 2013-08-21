@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Zenject
+namespace ModestTree.Zenject
 {
     public class GameObjectInstantiator
     {
@@ -21,7 +21,7 @@ namespace Zenject
             var injecter = new PropertiesInjecter(_container);
             foreach (var t in components)
             {
-                ZenUtil.Assert(t != null, "Undefined monobehaviour in template '" + template.name + "'");
+                Util.Assert(t != null, "Undefined monobehaviour in template '" + template.name + "'");
                 injecter.Inject(t);
             }
 

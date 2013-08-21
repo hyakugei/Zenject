@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Zenject
+namespace ModestTree.Zenject
 {
     public class GameObjectSingletonProviderFromPrefab<T> : ProviderInternal where T : Component
     {
@@ -23,7 +23,7 @@ namespace Zenject
             if (_instance == null)
             {
                 _instance = _factory.Create();
-                ZenUtil.Assert(_instance != null);
+                Util.Assert(_instance != null);
             }
 
             return _instance;

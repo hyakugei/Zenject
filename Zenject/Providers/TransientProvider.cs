@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Zenject
+namespace ModestTree.Zenject
 {
     public class TransientProvider<T> : ProviderInternal
     {
@@ -18,7 +18,7 @@ namespace Zenject
         public override object GetInstance()
         {
             var obj = _factory.Create();
-            ZenUtil.Assert(obj != null);
+            Util.Assert(obj != null);
             return obj;
         }
     }

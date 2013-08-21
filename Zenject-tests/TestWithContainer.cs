@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 
-namespace Zenject.Test
+namespace ModestTree.Zenject.Test
 {
     public class TestWithContainer
     {

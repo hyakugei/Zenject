@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Zenject
+namespace ModestTree.Zenject
 {
     // This class should ONLY be used the following way:
     //

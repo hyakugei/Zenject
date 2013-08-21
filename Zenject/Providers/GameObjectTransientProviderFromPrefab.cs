@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Zenject
+namespace ModestTree.Zenject
 {
     public class GameObjectTransientProviderFromPrefab<T> : ProviderInternal where T : Component
     {

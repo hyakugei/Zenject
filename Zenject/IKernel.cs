@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-namespace Zenject
+namespace ModestTree.Zenject
 {
     // Interface for kernel class
     // Currently there is only one (UnityKernel) but there should be another

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Zenject
+namespace ModestTree.Zenject
 {
     // Derived class should contain all dependencies
     // for the the given run configuration

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Security.Permissions;
 
-namespace Zenject
+namespace ModestTree.Zenject
 {
     public abstract class FactoryBase<T> : IFactory<T>
     {
@@ -61,14 +61,14 @@ namespace Zenject
                         }
                     }
 
-                    ZenUtil.Assert(param != null,
+                    Util.Assert(param != null,
                             "Unable to find parameter with type '" + paramInfo.ParameterType +
                             "' while constructing '" + concreteType + "'");
                     parameters.Add(param);
                 }
             }
 
-            ZenUtil.Assert(extrasList.Count == 0, "Passed unnecessary parameters when constructing '" + concreteType + "'");
+            Util.Assert(extrasList.Count == 0, "Passed unnecessary parameters when constructing '" + concreteType + "'");
 
             var newObj = method.Invoke(parameters.ToArray());
 

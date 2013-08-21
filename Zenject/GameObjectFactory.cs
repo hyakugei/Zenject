@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Zenject
+namespace ModestTree.Zenject
 {
     public class GameObjectFactory<TContract, TConcrete> : IFactory<TContract>
     {
@@ -35,7 +35,7 @@ namespace Zenject
             var gameObj = _instantiator.Instantiate(_template);
 
             var component = gameObj.GetComponent<TContract>();
-            ZenUtil.Assert(component != null, "Could not find component '" + typeof(TContract).Name + "' when creating game object from prefab");
+            Util.Assert(component != null, "Could not find component '" + typeof(TContract).Name + "' when creating game object from prefab");
 
             return component;
         }

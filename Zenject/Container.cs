@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace Zenject
+namespace ModestTree.Zenject
 {
     public class Container : IContainer
     {
@@ -32,7 +32,7 @@ namespace Zenject
             if (_providers.ContainsKey(typeof (TContract)))
             {
                 // Prevent duplicate singleton bindings:
-                ZenUtil.Assert(_providers[typeof(TContract)].Find(item => ReferenceEquals(item, provider)) == null,
+                Util.Assert(_providers[typeof(TContract)].Find(item => ReferenceEquals(item, provider)) == null,
                             "Found duplicate singleton binding for contract '" + typeof (TContract) + "'");
 
                 _providers[typeof (TContract)].Add(provider);
@@ -64,7 +64,7 @@ namespace Zenject
             {
                 var lookupStack = _lookupsInProgress.Select(t => t.ToString()).Aggregate((i, str) => ":" + str);
                 var errorMsg = "Circular dependency detected!  Lookup stack: '" + lookupStack  + "'";
-                ZenUtil.Assert(false, errorMsg);
+                Util.Assert(false, errorMsg);
             }
             _lookupsInProgress.Add(contract);
 
@@ -138,7 +138,7 @@ namespace Zenject
             {
                 var objects = ResolveInternal(contract, context);
 
-                ZenUtil.Assert(objects.Count < 2,
+                Util.Assert(objects.Count < 2,
                             "Found multiple matches when only one was expected for type '" + contract + "'");
                     // We could maybe remove this and just return the first one potentially
                 return objects.Count == 0 ? null : objects[0];
@@ -154,7 +154,7 @@ namespace Zenject
 
         public void Release(Type contract)
         {
-            ZenUtil.Assert(_providers.ContainsKey(contract));
+            Util.Assert(_providers.ContainsKey(contract));
 
             foreach (var provider in _providers[contract])
             {
@@ -192,7 +192,7 @@ namespace Zenject
                 }
                 else
                 {
-                    ZenUtil.Assert(false);
+                    Util.Assert(false);
                 }
             }
 
@@ -208,7 +208,7 @@ namespace Zenject
         {
             var map = new Dictionary<Type, List<Type>>();
             var types = ResolveTypeMany(rootContract);
-            ZenUtil.Assert(types.Count == 1);
+            Util.Assert(types.Count == 1);
             var rootType = types[0];
 
             map.Add(rootType, new List<Type>());
@@ -228,7 +228,7 @@ namespace Zenject
                 if (contractType.FullName.StartsWith("System.Collections.Generic.List"))
                 {
                     var subTypes = contractType.GetGenericArguments();
-                    ZenUtil.Assert(subTypes.Length == 1);
+                    Util.Assert(subTypes.Length == 1);
 
                     var subType = subTypes[0];
                     dependTypes = ResolveTypeMany(subType);
@@ -236,7 +236,7 @@ namespace Zenject
                 else
                 {
                     dependTypes = ResolveTypeMany(contractType);
-                    ZenUtil.Assert(dependTypes.Count <= 1);
+                    Util.Assert(dependTypes.Count <= 1);
                 }
 
                 foreach (var dependType in dependTypes)

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Zenject;
 
-namespace Zenject.Test
+namespace ModestTree.Zenject.Test
 {
     [TestFixture]
     public class TestDependencyInjectionSingleton1 : TestWithContainer

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Zenject
+namespace ModestTree.Zenject
 {
     public interface IContainer
     {

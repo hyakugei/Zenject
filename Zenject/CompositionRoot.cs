@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-namespace Zenject
+namespace ModestTree.Zenject
 {
     // Define this class as a component of a top-level game object, and define
     // any editor-defined components as a child.  This is necessary to guarantee that
@@ -29,6 +29,9 @@ namespace Zenject
 
         void Awake()
         {
+            // Call into the logging system as early as possible so that it initializes
+            Log.Info("Initializing Composition Root");
+
             InitContainer();
             Register();
             Resolve();
@@ -55,7 +58,7 @@ namespace Zenject
                 Inject((GameObject)obj);
             }
 
-            Debug.Log("CompositionRoot: Finished Injecting Dependencies");
+            Log.Info("CompositionRoot: Finished Injecting Dependencies");
         }
 
         void Resolve()
@@ -66,7 +69,7 @@ namespace Zenject
 
             if (_dependencyRoot == null)
             {
-                Debug.LogWarning("No dependency root found. Continuing anyway");
+                Log.Warn("No dependency root found. Continuing anyway");
             }
         }
     }

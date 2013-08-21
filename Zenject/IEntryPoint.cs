@@ -1,4 +1,4 @@
-﻿namespace Zenject
+﻿namespace ModestTree.Zenject
 {
     public interface IEntryPoint
     {

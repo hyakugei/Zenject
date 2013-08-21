@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using Zenject;
+using ModestTree.Zenject;
 
 namespace Asteroids
 {
@@ -52,7 +52,7 @@ namespace Asteroids
         public void Initialize()
         {
             Screen.showCursor = false;
-            Debug.Log("Started Game");
+            Log.Info("Started Game");
 
             GameEvent.ShipCrashed += OnShipCrashed;
 

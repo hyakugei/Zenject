@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Zenject
+namespace ModestTree.Zenject
 {
     public class GameObjectSingletonProvider<T> : ProviderInternal
     {
@@ -29,7 +29,7 @@ namespace Zenject
                 // We don't use the generic version here to avoid duplicate generic arguments to binder
                 _instance = obj.AddComponent(typeof(T));
 
-                ZenUtil.Assert(_instance != null);
+                Util.Assert(_instance != null);
 
                 var injecter = new PropertiesInjecter(_container);
                 injecter.Inject(_instance);
