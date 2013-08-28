@@ -63,6 +63,7 @@
     <Compile Include="IKernel.cs" />
     <Compile Include="InjectAttribute.cs" />
     <Compile Include="ITickable.cs" />
+    <Compile Include="KernelInitializer.cs" />
     <Compile Include="ObjectGraphVisualizer.cs" />
     <Compile Include="PropertiesInjecter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -78,12 +79,6 @@
     <Compile Include="UnityKernel.cs" />
     <Compile Include="ZenUtil.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj">
-      <Project>{32863e59-fe0f-42ef-9409-a5fb84b18e9f}</Project>
-      <Name>Core</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
@@ -96,4 +91,10 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{32863E59-FE0F-42EF-9409-A5FB84B18E9F}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

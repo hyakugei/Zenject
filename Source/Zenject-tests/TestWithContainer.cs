@@ -2,24 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ModestTree.Zenject;
 using NUnit.Framework;
 
 namespace ModestTree.Zenject.Test
 {
-    public class TestWithContainer
+    public class TestWithContainer : TestBase
     {
         protected IContainer _container;
 
         [SetUp]
-        public virtual void Setup()
+        public override void Setup()
         {
+            base.Setup();
             _container = new Container();
         }
 
         [TearDown]
-        public virtual void Destroy()
+        public override void Destroy()
         {
             _container = null;
+            base.Destroy();
         }
     }
 

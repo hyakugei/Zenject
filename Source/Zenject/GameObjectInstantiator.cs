@@ -27,5 +27,30 @@ namespace ModestTree.Zenject
 
             return gameObj;
         }
+
+        public T Instantiate<T>(GameObject template, string name) where T : MonoBehaviour
+        {
+            var component = Instantiate<T>(template);
+            component.gameObject.name = name;
+            return component;
+        }
+
+        public T Instantiate<T>(GameObject template) where T : MonoBehaviour
+        {
+            Util.Assert(template != null, "Null template found when instantiating game object");
+
+            var obj = Instantiate(template);
+
+            var component = obj.GetComponent<T>();
+            Util.Assert(component != null, "Could not find component with type '" + typeof(T) + "' when instantiating template");
+
+            return component;
+        }
+
+        public T Instantiate<T>(string name) where T : MonoBehaviour
+        {
+            var gameObj = new GameObject(name);
+            return gameObj.AddComponent<T>();
+        }
     }
 }

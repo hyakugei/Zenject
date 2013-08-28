@@ -9,9 +9,7 @@ namespace ModestTree.Zenject
         public const int UnityLateStartTickPriority = 1000;
 
         LinkedList<TickableInfo> _tasks = new LinkedList<TickableInfo>();
-
-        [Inject]
-        public List<ITickable> _queuedTasks;
+        List<ITickable> _queuedTasks = new List<ITickable>();
 
         public void AddTask(ITickable task)
         {

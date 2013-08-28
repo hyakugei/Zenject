@@ -24,6 +24,7 @@ namespace ModestTree.Zenject
 
             // Init default dependencies
             _container.Bind<IKernel>().AsSingleGameObject<UnityKernel>("Kernel");
+            _container.Bind<IEntryPoint>().AsSingle<KernelInitializer>();
             _container.Bind<EntryPointInitializer>().AsSingle();
         }
 

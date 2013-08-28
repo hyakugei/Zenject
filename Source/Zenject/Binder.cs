@@ -49,6 +49,11 @@ namespace ModestTree.Zenject
             return Bind(new SingletonInstanceProvider(instance));
         }
 
+        public BindingConditionSetter AsLookup<TConcrete>() where TConcrete : TContract
+        {
+            return ToMethod(c => c.Resolve<TConcrete>());
+        }
+
         // we can't have this method because of the necessary where() below, so in this case they have to specify TContract twice
         //public BindingConditionSetter AsSingleFromPrefab(GameObject template)
 

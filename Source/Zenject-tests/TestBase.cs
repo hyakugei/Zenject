@@ -6,21 +6,19 @@ using NUnit.Framework;
 
 namespace ModestTree.Zenject.Test
 {
-    public class TestExceptionsWithContainer : TestWithContainer
+    public class TestBase
     {
         [SetUp]
-        public override void Setup()
+        public virtual void Setup()
         {
-            base.Setup();
+            // Throw exceptions so we can use the ExpectedException attribute to test wrong usage
             Util.SetAssertHandleMethod(AssertHandleMethod.Exception);
         }
 
         [TearDown]
-        public override void Destroy()
+        public virtual void Destroy()
         {
-            base.Destroy();
             Util.SetAssertHandleMethod(AssertHandleMethod.LogAndContinue);
         }
     }
-
 }

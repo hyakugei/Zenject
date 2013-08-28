@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ModestTree.Zenject;
 using NUnit.Framework;
 
 namespace ModestTree.Zenject.Test
@@ -63,7 +64,7 @@ namespace ModestTree.Zenject.Test
     }
 
     [TestFixture]
-    public class TestDependencyInjectionSingleton2 : TestExceptionsWithContainer
+    public class TestDependencyInjectionSingleton2 : TestWithContainer
     {
         private class Test
         {
@@ -250,7 +251,7 @@ namespace ModestTree.Zenject.Test
     }
 
     [TestFixture]
-    public class TestDependencyInjection6 : TestExceptionsWithContainer
+    public class TestDependencyInjection6 : TestWithContainer
     {
         private class Test1
         {
@@ -326,7 +327,7 @@ namespace ModestTree.Zenject.Test
     }
 
     [TestFixture]
-    public class TestDependencyInjection8 : TestExceptionsWithContainer
+    public class TestDependencyInjection8 : TestWithContainer
     {
         private class Test0
         {
@@ -466,7 +467,7 @@ namespace ModestTree.Zenject.Test
     }
 
     [TestFixture]
-    public class TestDependencyInjection12 : TestExceptionsWithContainer
+    public class TestDependencyInjection12 : TestWithContainer
     {
         private class Test0
         {
@@ -514,7 +515,7 @@ namespace ModestTree.Zenject.Test
     }
 
     [TestFixture]
-    public class TestDependencyInjectionConditions1 : TestExceptionsWithContainer
+    public class TestDependencyInjectionConditions1 : TestWithContainer
     {
         private class Test0
         {
@@ -560,7 +561,7 @@ namespace ModestTree.Zenject.Test
    }
 
     [TestFixture]
-    public class TestDependencyInjectionConditions2 : TestExceptionsWithContainer
+    public class TestDependencyInjectionConditions2 : TestWithContainer
     {
         private class Test0
         {

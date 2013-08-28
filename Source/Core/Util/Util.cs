@@ -75,14 +75,13 @@ namespace ModestTree
                 // Avoid infinite loops if our error reporting system asserts
                 return;
             }
-
-            _isAsserting = true;
-            Log.Error(message);
-            _isAsserting = false;
-
+            
             switch (_handleMethod)
             {
                 case AssertHandleMethod.LogAndContinue:
+                    _isAsserting = true;
+                    Log.Error(message);
+                    _isAsserting = false;
                     break;
 
                 case AssertHandleMethod.Exception:
@@ -91,6 +90,7 @@ namespace ModestTree
                 case AssertHandleMethod.MessageBox:
 #if DEBUG
                     _isAsserting = true;
+                    Log.Error(message);
                     ErrorPopupHandler.Trigger(message);
                     _isAsserting = false;
 #endif

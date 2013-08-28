@@ -53,6 +53,7 @@
     <Compile Include="Util\Config.cs" />
     <Compile Include="Util\ErrorPopupHandler.cs" />
     <Compile Include="Util\StackAnalyzer.cs" />
+    <Compile Include="Util\UnityExtensionMethods.cs" />
     <Compile Include="Util\Util.cs" />
     <Compile Include="Util\StackTraceExternalEditorViewer.cs" />
   </ItemGroup>

@@ -48,7 +48,7 @@
   <ItemGroup>
     <Compile Include="InjectTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestExceptionsWithContainer.cs" />
+    <Compile Include="TestBase.cs" />
     <Compile Include="TestWithContainer.cs" />
   </ItemGroup>
   <ItemGroup>
