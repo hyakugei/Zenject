@@ -51,7 +51,9 @@
     <Compile Include="Log\LogStreamUnity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\Config.cs" />
+    <Compile Include="Util\DotNetExtensions.cs" />
     <Compile Include="Util\ErrorPopupHandler.cs" />
+    <Compile Include="Util\ReadOnlyDictionary.cs" />
     <Compile Include="Util\StackAnalyzer.cs" />
     <Compile Include="Util\UnityExtensionMethods.cs" />
     <Compile Include="Util\Util.cs" />

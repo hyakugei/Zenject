@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace ModestTree.Zenject.Test
 {
     [TestFixture]
-    public class TestDependencyInjectionSingleton1 : TestWithContainer
+    public class TestSingleton1 : TestWithContainer
     {
         private interface ITest
         {
@@ -64,7 +64,7 @@ namespace ModestTree.Zenject.Test
     }
 
     [TestFixture]
-    public class TestDependencyInjectionSingleton2 : TestWithContainer
+    public class TestSingleton2 : TestWithContainer
     {
         private class Test
         {
@@ -102,7 +102,7 @@ namespace ModestTree.Zenject.Test
     }
 
     [TestFixture]
-    public class TestDependencyInjectionTestOptional : TestWithContainer
+    public class TestTestOptional : TestWithContainer
     {
         private class Test1
         {
@@ -143,7 +143,7 @@ namespace ModestTree.Zenject.Test
     }
 
     [TestFixture]
-    public class TestDependencyInjectionPropertyInjection : TestWithContainer
+    public class TestPropertyInjection : TestWithContainer
     {
         private class Test1
         {
@@ -175,7 +175,7 @@ namespace ModestTree.Zenject.Test
         }
 
         [Test]
-        public void TestPropertyInjection()
+        public void TestCase1()
         {
             _container.Bind<Test2>().AsSingle();
             _container.Bind<Test1>().AsSingle();
@@ -190,7 +190,7 @@ namespace ModestTree.Zenject.Test
     }
 
     [TestFixture]
-    public class TestDependencyInjection3 : TestWithContainer
+    public class Test3 : TestWithContainer
     {
         private class Test1
         {
@@ -231,7 +231,7 @@ namespace ModestTree.Zenject.Test
     }
 
     [TestFixture]
-    public class TestDependencyInjectionTransientInjection : TestWithContainer
+    public class TestTransientInjection : TestWithContainer
     {
         private class Test1
         {
@@ -251,7 +251,7 @@ namespace ModestTree.Zenject.Test
     }
 
     [TestFixture]
-    public class TestDependencyInjection6 : TestWithContainer
+    public class Test6 : TestWithContainer
     {
         private class Test1
         {
@@ -291,7 +291,7 @@ namespace ModestTree.Zenject.Test
     }
 
     [TestFixture]
-    public class TestDependencyInjection7 : TestWithContainer
+    public class Test7 : TestWithContainer
     {
         private class Test0
         {
@@ -327,7 +327,7 @@ namespace ModestTree.Zenject.Test
     }
 
     [TestFixture]
-    public class TestDependencyInjection8 : TestWithContainer
+    public class Test8 : TestWithContainer
     {
         private class Test0
         {
@@ -354,7 +354,7 @@ namespace ModestTree.Zenject.Test
     }
 
     [TestFixture]
-    public class TestDependencyInjection9 : TestWithContainer
+    public class Test9 : TestWithContainer
     {
         private abstract class Test0
         {
@@ -378,7 +378,7 @@ namespace ModestTree.Zenject.Test
     }
 
     [TestFixture]
-    public class TestDependencyInjection10 : TestWithContainer
+    public class Test10 : TestWithContainer
     {
         private class Test0
         {
@@ -401,7 +401,7 @@ namespace ModestTree.Zenject.Test
     }
 
     [TestFixture]
-    public class TestDependencyInjection11 : TestWithContainer
+    public class Test11 : TestWithContainer
     {
         private class Test1
         {
@@ -467,7 +467,7 @@ namespace ModestTree.Zenject.Test
     }
 
     [TestFixture]
-    public class TestDependencyInjection12 : TestWithContainer
+    public class Test12 : TestWithContainer
     {
         private class Test0
         {
@@ -515,11 +515,10 @@ namespace ModestTree.Zenject.Test
     }
 
     [TestFixture]
-    public class TestDependencyInjectionConditions1 : TestWithContainer
+    public class TestConditionsTarget : TestWithContainer
     {
         private class Test0
         {
-
         }
 
         private class Test1
@@ -561,7 +560,7 @@ namespace ModestTree.Zenject.Test
    }
 
     [TestFixture]
-    public class TestDependencyInjectionConditions2 : TestWithContainer
+    public class TestConditionsName : TestWithContainer
     {
         private class Test0
         {
@@ -607,6 +606,95 @@ namespace ModestTree.Zenject.Test
     }
 
     [TestFixture]
+    public class TestConditionsParents : TestWithContainer
+    {
+        class Test0
+        {
+        }
+
+        class Test1
+        {
+            public Test0 test0;
+
+            public Test1(Test0 test0)
+            {
+                this.test0 = test0;
+            }
+        }
+
+        class Test2
+        {
+            public Test0 test0;
+
+            public Test2(Test0 test0)
+            {
+                this.test0 = test0;
+            }
+        }
+
+        class Test3
+        {
+            public Test1 test1;
+
+            public Test3(Test1 test1)
+            {
+                this.test1 = test1;
+            }
+        }
+
+        class Test4
+        {
+            public Test1 test1;
+
+            public Test4(Test1 test1)
+            {
+                this.test1 = test1;
+            }
+        }
+
+        [Test]
+        [ExpectedException]
+        public void TestCase1()
+        {
+            _container.Bind<Test1>().AsSingle();
+            _container.Bind<Test0>().AsSingle().When(c => c.parents.Contains(typeof(Test2)));
+
+            _container.Resolve<Test1>();
+        }
+
+        [Test]
+        public void TestCase2()
+        {
+            _container.Bind<Test1>().AsSingle();
+            _container.Bind<Test0>().AsSingle().When(c => c.parents.Contains(typeof(Test1)));
+
+            var test1 = _container.Resolve<Test1>();
+            Assert.That(test1 != null);
+        }
+
+        [Test]
+        // Test using parents to look deeper up the heirarchy..
+        public void TestCase3()
+        {
+            var t0a = new Test0();
+            var t0b = new Test0();
+
+            _container.Bind<Test3>().AsSingle();
+            _container.Bind<Test4>().AsSingle();
+            _container.Bind<Test1>().AsTransient();
+
+            _container.Bind<Test0>().AsSingle(t0a).When(c => c.parents.Contains(typeof(Test3)));
+            _container.Bind<Test0>().AsSingle(t0b).When(c => c.parents.Contains(typeof(Test4)));
+
+            var test3 = _container.Resolve<Test3>();
+            var test4 = _container.Resolve<Test4>();
+
+            Assert.That(ReferenceEquals(test3.test1.test0, t0a));
+            Assert.That(ReferenceEquals(test4.test1.test0, t0b));
+        }
+    }
+
+    [TestFixture]
     public class TestMultipleInterfaceSameSingle : TestWithContainer
     {
         private interface ITest1
@@ -622,7 +710,7 @@ namespace ModestTree.Zenject.Test
         }
 
         [Test]
-        public void Test()
+        public void TestCase1()
         {
             _container.Bind<ITest1>().AsSingle<Test1>();
             _container.Bind<ITest2>().AsSingle<Test1>();
@@ -635,7 +723,7 @@ namespace ModestTree.Zenject.Test
     }
 
     [TestFixture]
-    public class TestDependencyInjectionResolveMany : TestWithContainer
+    public class TestResolveMany : TestWithContainer
     {
         private class Test0
         {
@@ -650,7 +738,7 @@ namespace ModestTree.Zenject.Test
         }
 
         [Test]
-        public void TestResolveMany()
+        public void TestCase1()
         {
             _container.Bind<Test0>().AsSingle<Test1>();
             _container.Bind<Test0>().AsSingle<Test2>();
@@ -661,7 +749,7 @@ namespace ModestTree.Zenject.Test
         }
 
         [Test]
-        public void TestResolveEmpty()
+        public void TestCase2()
         {
             List<Test0> many = _container.ResolveMany<Test0>();
 
@@ -670,7 +758,7 @@ namespace ModestTree.Zenject.Test
     }
 
     [TestFixture]
-    public class TestDependencyInjection14 : TestWithContainer
+    public class Test14 : TestWithContainer
     {
         private struct Test1
         {
@@ -696,7 +784,7 @@ namespace ModestTree.Zenject.Test
     }
 
     [TestFixture]
-    public class TestDependencyInjectionCustomScope : TestWithContainer
+    public class TestCustomScope : TestWithContainer
     {
         private class Test1
         {
@@ -719,7 +807,7 @@ namespace ModestTree.Zenject.Test
     }
 
     [TestFixture]
-    public class TestDependencyInjectionCustomScope2 : TestWithContainer
+    public class TestCustomScope2 : TestWithContainer
     {
         interface Test1
         {
@@ -758,7 +846,7 @@ namespace ModestTree.Zenject.Test
     }
 
     [TestFixture]
-    public class TestDependencyInjectionCircularDependencies : TestWithContainer
+    public class TestCircularDependencies : TestWithContainer
     {
         class Test1
         {

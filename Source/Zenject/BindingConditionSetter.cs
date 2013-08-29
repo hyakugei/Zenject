@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ModestTree.Zenject
 {
@@ -6,6 +7,7 @@ namespace ModestTree.Zenject
     {
         public Type target;
         public string name;
+        public List<Type> parents;
     }
 
     public delegate bool BindingCondition(ResolveContext c);

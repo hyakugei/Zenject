@@ -22,7 +22,7 @@ namespace ModestTree.Zenject
         public override object GetInstance()
         {
             var obj = _method(_container);
-            Util.Assert(obj != null);
+            Util.Assert(obj != null, "Method provider returned null when looking up type '" + typeof(T).Name + "'");
             return obj;
         }
     }

@@ -22,9 +22,16 @@ namespace ModestTree.Zenject
 
             var members = ZenUtil.GetMemberDependencies(injectable.GetType());
 
+            var parentDependencies = new List<Type>(_container.LookupsInProgress);
+
             foreach (var member in members)
             {
-                var context = new ResolveContext() { target = injectable.GetType(), name = member.Name };
+                var context = new ResolveContext() 
+                { 
+                    target = injectable.GetType(), 
+                    name = member.Name,
+                    parents = parentDependencies,
+                };
 
                 var injectAttr = ZenUtil.GetInjectAttribute(member);
                 Util.Assert(injectAttr != null);

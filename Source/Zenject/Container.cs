@@ -14,6 +14,14 @@ namespace ModestTree.Zenject
         SingletonProviderMap _singletonMap;
         List<Type> _lookupsInProgress = new List<Type>();
 
+        public List<Type> LookupsInProgress
+        {
+            get
+            {
+                return _lookupsInProgress;
+            }
+        }
+
         public Container()
         {
             _singletonMap = new SingletonProviderMap(this);

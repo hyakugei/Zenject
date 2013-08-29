@@ -24,7 +24,7 @@ namespace ModestTree.Zenject
             foreach (var entry in graph)
             {
                 // ignore these to clean up the graph
-                if (entry.Key == typeof(EntryPointInitializer) || entry.Key == typeof(UnityKernel))
+                if (entry.Key == typeof(EntryPointInitializer) || entry.Key == typeof(KernelInitializer))
                 {
                     continue;
                 }

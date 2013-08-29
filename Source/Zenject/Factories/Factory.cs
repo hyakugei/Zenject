@@ -42,7 +42,13 @@ namespace ModestTree.Zenject
 
                 if (!found)
                 {
-                    var context = new ResolveContext() {target = concreteType, name = paramInfo.Name};
+                    var context = new ResolveContext()
+                    {
+                        target = concreteType, 
+                        name = paramInfo.Name, 
+                        parents = new List<Type>(_container.LookupsInProgress)
+                    };
+
                     var param = _container.Resolve(paramInfo.ParameterType, context);
 
                     if (param == null)

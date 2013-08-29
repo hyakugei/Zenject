@@ -12,20 +12,9 @@ namespace ModestTree
     // Used when running tests
     public class AssertException : Exception
     {
-        string _stackTrace;
-
-        public override string StackTrace
-        { 
-            get
-            {
-                return _stackTrace;
-            }
-        }
-
         public AssertException(string message)
             : base(message)
         {
-            _stackTrace = StackAnalyzer.GetStackTrace();
         }
     }
 
@@ -75,7 +64,7 @@ namespace ModestTree
                 // Avoid infinite loops if our error reporting system asserts
                 return;
             }
-            
+
             switch (_handleMethod)
             {
                 case AssertHandleMethod.LogAndContinue:
@@ -85,6 +74,9 @@ namespace ModestTree
                     break;
 
                 case AssertHandleMethod.Exception:
+                    // this is usually used when running unit tests
+                    // for some reason using StackAnalyzer does not work in this case, 
+                    // so don't return stack trace
                     throw new AssertException(message);
 
                 case AssertHandleMethod.MessageBox:

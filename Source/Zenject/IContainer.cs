@@ -28,5 +28,10 @@ namespace ModestTree.Zenject
 
         Dictionary<Type, List<Type>> CalculateObjectGraph<TRoot>();
         Dictionary<Type, List<Type>> CalculateObjectGraph(Type contract);
+
+        List<Type> LookupsInProgress
+        {
+            get;
+        }
     }
 }
