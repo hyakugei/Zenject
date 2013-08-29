@@ -9,13 +9,13 @@ namespace ModestTree.Zenject.Test
 {
     public class TestWithContainer : TestBase
     {
-        protected IContainer _container;
+        protected DiContainer _container;
 
         [SetUp]
         public override void Setup()
         {
             base.Setup();
-            _container = new Container();
+            _container = new DiContainer();
         }
 
         [TearDown]

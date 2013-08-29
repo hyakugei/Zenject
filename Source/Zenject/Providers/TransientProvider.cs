@@ -5,7 +5,7 @@ namespace ModestTree.Zenject
     {
         private IFactory<T> _factory;
 
-        public TransientProvider(IContainer container)
+        public TransientProvider(DiContainer container)
         {
             _factory = new Factory<T>(container);
         }

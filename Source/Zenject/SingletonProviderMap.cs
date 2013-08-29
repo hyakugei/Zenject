@@ -21,7 +21,7 @@ namespace ModestTree.Zenject
             private T _instance;
             private SingletonProviderMap _map;
 
-            public SingletonLazyCreator(IContainer container, SingletonProviderMap map)
+            public SingletonLazyCreator(DiContainer container, SingletonProviderMap map)
             {
                 _factory = new Factory<T>(container);
                 _map = map;
@@ -88,9 +88,9 @@ namespace ModestTree.Zenject
         }
 
         private Dictionary<Type, ISingletonLazyCreator> _creators = new Dictionary<Type, ISingletonLazyCreator>();
-        private Container _container;
+        private DiContainer _container;
 
-        public SingletonProviderMap(Container container)
+        public SingletonProviderMap(DiContainer container)
         {
             _container = container;
         }

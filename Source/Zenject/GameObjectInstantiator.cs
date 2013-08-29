@@ -4,9 +4,9 @@ namespace ModestTree.Zenject
 {
     public class GameObjectInstantiator
     {
-        IContainer _container;
+        DiContainer _container;
 
-        public GameObjectInstantiator(IContainer container)
+        public GameObjectInstantiator(DiContainer container)
         {
             _container = container;
         }

@@ -9,9 +9,9 @@ namespace ModestTree.Zenject
     // Iterate over fields/properties on a given object and inject any with the [Inject] attribute
     class PropertiesInjecter
     {
-        private IContainer _container;
+        private DiContainer _container;
 
-        public PropertiesInjecter(IContainer container)
+        public PropertiesInjecter(DiContainer container)
         {
             _container = container;
         }

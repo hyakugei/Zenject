@@ -6,7 +6,7 @@ namespace ModestTree.Zenject
     {
         GameObject _template;
 
-        public GameObjectFactory(IContainer container, GameObject template)
+        public GameObjectFactory(DiContainer container, GameObject template)
         {
             _template = template;
         }
@@ -19,11 +19,11 @@ namespace ModestTree.Zenject
 
     public class GameObjectFactory<TContract> : IFactory<TContract> where TContract : Component
     {
-        IContainer _container;
+        DiContainer _container;
         GameObject _template;
         GameObjectInstantiator _instantiator;
 
-        public GameObjectFactory(IContainer container, GameObject template)
+        public GameObjectFactory(DiContainer container, GameObject template)
         {
             _template = template;
             _container = container;

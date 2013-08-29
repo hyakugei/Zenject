@@ -8,7 +8,7 @@ namespace ModestTree.Zenject
         IFactory<T> _factory;
         object _instance;
 
-        public GameObjectSingletonProviderFromPrefab(IContainer container, GameObject template)
+        public GameObjectSingletonProviderFromPrefab(DiContainer container, GameObject template)
         {
             _factory = new GameObjectFactory<T>(container, template);
         }

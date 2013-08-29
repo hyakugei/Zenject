@@ -3,12 +3,12 @@ namespace ModestTree.Zenject
 {
     public class MethodProvider<T> : ProviderInternal
     {
-        public delegate T Method(IContainer c);
+        public delegate T Method(DiContainer c);
 
-        private IContainer _container;
+        private DiContainer _container;
         private Method _method;
 
-        public MethodProvider(Method method, IContainer container)
+        public MethodProvider(Method method, DiContainer container)
         {
             _method = method;
             _container = container;

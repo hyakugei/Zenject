@@ -14,7 +14,7 @@ namespace ModestTree.Zenject
     // - http://www.graphviz.org/
     public static class ObjectGraphVisualizer
     {
-        public static void OutputObjectGraphToFile(IContainer container, string outputPath)
+        public static void OutputObjectGraphToFile(DiContainer container, string outputPath)
         {
             // Output the entire object graph to file
             var graph = container.CalculateObjectGraph<IDependencyRoot>();
@@ -32,7 +32,7 @@ namespace ModestTree.Zenject
                 foreach (var dependencyType in entry.Value)
                 {
                     // ignore factory dependency to clean up graph
-                    if (dependencyType == typeof(Container))
+                    if (dependencyType == typeof(DiContainer))
                     {
                         continue;
                     }

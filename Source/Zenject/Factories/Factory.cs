@@ -7,11 +7,11 @@ namespace ModestTree.Zenject
 {
     public abstract class FactoryBase<T> : IFactory<T>
     {
-        protected IContainer _container;
+        protected DiContainer _container;
 
         public abstract T Create(params object[] constructorArgs);
 
-        public FactoryBase(IContainer container)
+        public FactoryBase(DiContainer container)
         {
             _container = container;
         }
@@ -87,7 +87,7 @@ namespace ModestTree.Zenject
 
     public class Factory<TContract, TConcrete> : FactoryBase<TContract> where TConcrete : TContract
     {
-        public Factory(IContainer container)
+        public Factory(DiContainer container)
             : base(container)
         {
         }
@@ -100,7 +100,7 @@ namespace ModestTree.Zenject
 
     public class Factory<TContract> : FactoryBase<TContract>
     {
-        public Factory(IContainer container)
+        public Factory(DiContainer container)
             : base(container)
         {
         }

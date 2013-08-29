@@ -6,10 +6,10 @@ namespace ModestTree.Zenject
 
     public class Binder<TContract>
     {
-        private Container _container;
+        private DiContainer _container;
         private SingletonProviderMap _singletonMap;
 
-        public Binder(Container container, SingletonProviderMap singletonMap)
+        public Binder(DiContainer container, SingletonProviderMap singletonMap)
         {
             _container = container;
             _singletonMap = singletonMap;

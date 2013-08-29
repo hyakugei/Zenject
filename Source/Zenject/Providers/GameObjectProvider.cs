@@ -5,11 +5,11 @@ namespace ModestTree.Zenject
 {
     public class GameObjectSingletonProvider<T> : ProviderInternal
     {
-        Container _container;
+        DiContainer _container;
         object _instance;
         string _name;
 
-        public GameObjectSingletonProvider(Container container, string name)
+        public GameObjectSingletonProvider(DiContainer container, string name)
         {
             _name = name;
             _container = container;

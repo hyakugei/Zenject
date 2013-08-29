@@ -9,7 +9,7 @@ namespace ModestTree.Zenject
     // UnityContext gets created first before anything that uses IoC
     public class CompositionRoot : MonoBehaviour
     {
-        IContainer _container;
+        DiContainer _container;
         IDependencyRoot _dependencyRoot;
 
         void Register()
@@ -20,7 +20,7 @@ namespace ModestTree.Zenject
 
         void InitContainer()
         {
-            _container  = new Container();
+            _container = new DiContainer();
 
             // Init default dependencies
             _container.Bind<IKernel>().AsSingleGameObject<UnityKernel>("Kernel");

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ModestTree.Zenject
 {
-    public class Container : IContainer
+    public class DiContainer
     {
         Dictionary<Type, List<ProviderInternal>> _providers = new Dictionary<Type, List<ProviderInternal>>();
 
@@ -22,11 +22,11 @@ namespace ModestTree.Zenject
             }
         }
 
-        public Container()
+        public DiContainer()
         {
             _singletonMap = new SingletonProviderMap(this);
 
-            Bind<IContainer>().AsSingle(this);
+            Bind<DiContainer>().AsSingle(this);
             Bind<GameObjectInstantiator>().AsSingle();
         }
 

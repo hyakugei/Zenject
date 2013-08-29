@@ -14,10 +14,10 @@ namespace ModestTree.Zenject
     //  }
     public class CustomScope : IDisposable
     {
-        private IContainer _container;
+        private DiContainer _container;
         private List<Type> _scopeContracts = new List<Type>();
 
-        public CustomScope(IContainer container)
+        public CustomScope(DiContainer container)
         {
             _container = container;
         }
