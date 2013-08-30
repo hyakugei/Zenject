@@ -10,6 +10,7 @@ namespace ModestTree
     public static class Config
     {
         static XmlDocument _xml;
+        static XmlDocument _xmlOverride;
 
         static Config()
         {
@@ -20,6 +21,7 @@ namespace ModestTree
         static void LoadConfigFile()
         {
             Util.Assert(_xml == null);
+            Util.Assert(_xmlOverride == null);
 
             try
             {
@@ -32,16 +34,28 @@ namespace ModestTree
                 Log.Warn("No Assets/core_config.xml found.");
                 _xml = null;
             }
+
+            try
+            {
+                _xmlOverride = new XmlDocument();
+                // TODO: Change this to use resources.load so it works with web builds
+                _xmlOverride.Load( Application.dataPath + @"\core_config_custom.xml" );
+            }
+            catch (Exception)
+            {
+                Log.Warn("No Assets/core_config_custom.xml found.");
+                _xmlOverride = null;
+            }
         }
 
-        static bool TryGet<TValue>(string identifier, ref TValue value)
+        static bool TryGet<TValue>(XmlDocument xml, string identifier, ref TValue value)
         {
-            if (_xml == null)
+            if (xml == null)
             {
                 return false;
             }
 
-            var child = _xml.SelectSingleNode("/Config/" + identifier);
+            var child = xml.SelectSingleNode("/Config/" + identifier);
 
             if (child == null)
             {
@@ -65,7 +79,7 @@ namespace ModestTree
         {
             TValue value = default(TValue);
 
-            if (TryGet(identifier, ref value))
+            if (TryGet(_xmlOverride, identifier, ref value) || TryGet(_xml, identifier, ref value))
             {
                 return value;
             }
@@ -76,20 +90,23 @@ namespace ModestTree
 
         public static TValue Get<TValue>(string identifier, TValue defaultValue)
         {
-            var value = defaultValue;
+            var value = default(TValue);
+            if (TryGet(_xmlOverride, identifier, ref value) || TryGet(_xml, identifier, ref value))
+            {
+                return value;
+            }
 
-            TryGet(identifier, ref value);
-            return value;
+            return defaultValue;
         }
 
-        public static List<TValue> GetAll<TValue>(string identifier)
+        static List<TValue> GetAll<TValue>(XmlDocument xml, string identifier)
         {
-            if (_xml == null)
+            if (xml == null)
             {
                 return new List<TValue>();
             }
 
-            var nodeList = _xml.SelectNodes("/Config/" + identifier);
+            var nodeList = xml.SelectNodes("/Config/" + identifier);
 
             Util.Assert(nodeList != null);
 
@@ -108,6 +125,11 @@ namespace ModestTree
             }
 
             return valueList;
+        }
+
+        public static List<TValue> GetAll<TValue>(string identifier)
+        {
+            return GetAll<TValue>(_xmlOverride, identifier).Concat(GetAll<TValue>(_xml, identifier)).ToList();
         }
     }
 }
