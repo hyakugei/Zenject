@@ -51,7 +51,7 @@ namespace ModestTree.Zenject
 
         public BindingConditionSetter AsLookup<TConcrete>() where TConcrete : TContract
         {
-            return ToMethod(c => c.Resolve<TConcrete>());
+            return AsMethod(c => c.Resolve<TConcrete>());
         }
 
         // we can't have this method because of the necessary where() below, so in this case they have to specify TContract twice
@@ -71,7 +71,7 @@ namespace ModestTree.Zenject
             return Bind(new GameObjectTransientProviderFromPrefab<TConcrete>(_container, template));
         }
 
-        public BindingConditionSetter ToMethod(MethodProvider<TContract>.Method method)
+        public BindingConditionSetter AsMethod(MethodProvider<TContract>.Method method)
         {
             return Bind(new MethodProvider<TContract>(method, _container));
         }
