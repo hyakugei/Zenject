@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 
-namespace ModestTree.Zenject.Test
+namespace ModestTree.Test
 {
     public class TestBase
     {
@@ -19,6 +19,11 @@ namespace ModestTree.Zenject.Test
         public virtual void Destroy()
         {
             Util.SetAssertHandleMethod(AssertHandleMethod.LogAndContinue);
+        }
+
+        public void Print(string msg)
+        {
+            Assert.That(false, msg);
         }
     }
 }

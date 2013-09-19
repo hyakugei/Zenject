@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
-#if DEBUG
+using System.Text.RegularExpressions;
+#if DEBUG && UNITY_EDITOR
 using UnityEditor;
 using UnityEditorInternal;
 using Debug = UnityEngine.Debug;
@@ -12,6 +13,27 @@ namespace ModestTree
     public class ErrorPopupHandler
     {
         static bool _hasStopped;
+        static string _suppressPopupPattern = "";
+
+        static ErrorPopupHandler()
+        {
+            var patternsToIgnore = Config.GetAll<string>("ErrorPopupHandler/IgnorePatterns/Pattern");
+
+            foreach (var pattern in patternsToIgnore)
+            {
+                if (_suppressPopupPattern.Length > 0)
+                {
+                    _suppressPopupPattern += "|";
+                }
+
+                _suppressPopupPattern += pattern;
+            }
+        }
+
+        static bool ShouldIgnore(string errorMsg)
+        {
+            return (Regex.Match(errorMsg, _suppressPopupPattern, RegexOptions.IgnoreCase).Success);
+        }
 
         public static void Trigger(string message)
         {
@@ -23,6 +45,11 @@ namespace ModestTree
             if (_hasStopped)
             {
                 // Ignore errors that occur after we set isPlaying to false
+                return;
+            }
+
+            if (ShouldIgnore(message))
+            {
                 return;
             }
 

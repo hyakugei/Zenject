@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using ModestTree.Zenject;
 using NUnit.Framework;
+using ModestTree.Test;
 
 namespace ModestTree.Zenject.Test
 {

@@ -27,16 +27,29 @@ namespace ModestTree
         {
             LoadStreams();
 
+#if UNITY_EDITOR || UNITY_WEBPLAYER
             Application.RegisterLogCallback(OnUnityLog);
+#endif
 
             Info("Initialized log");
+        }
+
+        static string GetBuildConfiguration()
+        {
+#if UNITY_EDITOR
+            return "UnityEditor";
+#elif UNITY_WEBPLAYER
+            return "UnityWebPlayer";
+#else
+            return "StandaloneExe";
+#endif
         }
 
         static void LoadStreams()
         {
             Util.Assert(_streams.Count == 0);
 
-            foreach (var streamTypeName in Config.GetAll<string>("Logging/LogStreams/Stream"))
+            foreach (var streamTypeName in Config.GetAll<string>("Logging/LogStreams/" + GetBuildConfiguration()))
             {
                 var type = Type.GetType(streamTypeName);
                 Util.Assert(type != null, "Could not resolve type '" + streamTypeName + "'");
@@ -50,12 +63,7 @@ namespace ModestTree
                 _streams.Add(stream);
             }
 
-            if (_streams.Count == 0)
-            {
-                _streams.Add(LogStreamUnity.Instance);
-
-                Log.Warn("No log streams found, defaulting to unity stream");
-            }
+            Util.Assert(_streams.Count != 0, "No log streams enabled");
         }
 
         public static void AddStream(ILogStream strm)
@@ -95,7 +103,7 @@ namespace ModestTree
                 case LogType.Exception:
                 case LogType.Error:
                     Error(LogCategory.General, msg, stackTrace);
-#if DEBUG
+#if DEBUG && UNITY_EDITOR
                     ErrorPopupHandler.Trigger(msg, stackTrace);
 #endif
                     break;
@@ -113,20 +121,27 @@ namespace ModestTree
             _isEnabled = enabled;   
         }
 
+        [Conditional("DEBUG")]
         public static void Trace()
         { 
             Trace(LogCategory.General);
         }
 
+        [Conditional("DEBUG")]
         public static void Trace(LogCategory category)
         {
             if (_isEnabled)
             {
                 var frame = StackAnalyzer.GetLastFrame();
-                Trace(category, frame.ClassName + ":" + frame.FunctionName);
+                if (frame != null)
+                // frame can be equal to null if we do not have mdb files!
+                {
+                    Trace(category, frame.ClassName + ":" + frame.FunctionName);
+                }
             }
         }
 
+        [Conditional("DEBUG")]
         public static void Trace(string message)
         {
             if (_isEnabled)
@@ -135,6 +150,7 @@ namespace ModestTree
             }
         }
 
+        [Conditional("DEBUG")]
         public static void Trace(LogCategory category, string message)
         {
             if (_isEnabled)
@@ -237,6 +253,7 @@ namespace ModestTree
             }
         }
 
+        [Conditional("DEBUG")]
         public static void Debug(string message)
         {
             if (_isEnabled)
@@ -245,6 +262,7 @@ namespace ModestTree
             }
         }
 
+        [Conditional("DEBUG")]
         public static void Debug(LogCategory category, string message)
         {
             if (_isEnabled)
@@ -253,6 +271,7 @@ namespace ModestTree
             }
         }
 
+        [Conditional("DEBUG")]
         static void Debug(LogCategory category, string message, string stackTrace)
         {
             _isEnabled = false; // avoid infinite loops

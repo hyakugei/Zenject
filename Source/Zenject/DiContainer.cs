@@ -7,6 +7,9 @@ using System.Text;
 
 namespace ModestTree.Zenject
 {
+    // Responsibilities:
+    // - Expose methods to configure object graph via Bind() methods
+    // - Build object graphs via Resolve() method
     public class DiContainer
     {
         Dictionary<Type, List<ProviderInternal>> _providers = new Dictionary<Type, List<ProviderInternal>>();
@@ -66,7 +69,7 @@ namespace ModestTree.Zenject
             return ResolveMany(contract, new ResolveContext());
         }
 
-        private List<object> ResolveInternal(Type contract, ResolveContext context)
+        List<object> ResolveInternal(Type contract, ResolveContext context)
         {
             if (_lookupsInProgress.Contains(contract))
             {
@@ -88,11 +91,11 @@ namespace ModestTree.Zenject
 
             if (_providers.ContainsKey(contract))
             {
-                return CreateGenericList(contract, ResolveInternal(contract, context).ToArray());
+                return ReflectionUtil.CreateGenericList(contract, ResolveInternal(contract, context).ToArray());
             }
 
             // All many-dependencies are optional, return an empty list
-            return CreateGenericList(contract, new object[] {});
+            return ReflectionUtil.CreateGenericList(contract, new object[] {});
         }
 
         public List<Type> ResolveTypeMany(Type contract)
@@ -111,21 +114,6 @@ namespace ModestTree.Zenject
         public TContract Resolve<TContract>()
         {
             return Resolve<TContract>(new ResolveContext());
-        }
-
-        private object CreateGenericList(Type elementType, object[] contentsAsObj)
-        {
-            var listType = typeof(List<>);
-            var constructedListType = listType.MakeGenericType(elementType);
-
-            var list = (IList)Activator.CreateInstance(constructedListType);
-
-            foreach (var obj in contentsAsObj)
-            {
-                list.Add(obj);
-            }
-
-            return list;
         }
 
         public TContract Resolve<TContract>(ResolveContext context)

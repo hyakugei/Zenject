@@ -36,8 +36,14 @@ namespace ModestTree
             _handleMethod = handleMethod;
         }
 
-        // Note: ignores asserts for release builds
+        // Note: ignore asserts for release builds
+        // We add UNITY_EDITOR because unity does not define the debug macro
+        // so would not trigger asserts for any .cs files added directly
+        // to the project
+        [Conditional("DEBUG")]
         [Conditional("UNITY_EDITOR")]
+        // For now include asserts in web builds
+        [Conditional("UNITY_WEBPLAYER")]
         public static void Assert(bool condition)
         {
             if (!condition)
@@ -46,8 +52,10 @@ namespace ModestTree
             }
         }
 
-        // Note: ignores asserts for release builds
+        [Conditional("DEBUG")]
         [Conditional("UNITY_EDITOR")]
+        // For now include asserts in web builds
+        [Conditional("UNITY_WEBPLAYER")]
         public static void Assert(bool condition, string message)
         {
             if (!condition)
@@ -56,7 +64,10 @@ namespace ModestTree
             }
         }
 
+        [Conditional("DEBUG")]
         [Conditional("UNITY_EDITOR")]
+        // For now include asserts in web builds
+        [Conditional("UNITY_WEBPLAYER")]
         static void TriggerAssert(string message)
         {
             if (_isAsserting)
@@ -80,12 +91,17 @@ namespace ModestTree
                     throw new AssertException(message);
 
                 case AssertHandleMethod.MessageBox:
-#if DEBUG
                     _isAsserting = true;
                     Log.Error(message);
+#if UNITY_EDITOR
                     ErrorPopupHandler.Trigger(message);
-                    _isAsserting = false;
+#else
+                    if (Debugger.IsAttached)
+                    {
+                        Debugger.Break();
+                    }
 #endif
+                    _isAsserting = false;
                     break;
             }
         }

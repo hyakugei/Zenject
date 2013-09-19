@@ -1,14 +1,15 @@
 using System.Diagnostics;
 using System.Text.RegularExpressions;
-#if DEBUG
-using UnityEditorInternal;
-using UnityEditor;
-#endif
 using UnityEngine;
 using System.Collections.Generic;
 using System.Reflection;
 using System;
 using System.IO;
+
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditorInternal;
+#endif
 
 namespace ModestTree
 {
@@ -53,7 +54,7 @@ namespace ModestTree
             }
             else
             {
-#if DEBUG
+#if UNITY_EDITOR
                 InternalEditorUtility.OpenFileAtLineExternal(frame.FileName, frame.LineNo);
 #endif
             }

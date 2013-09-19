@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
+#if UNITY_EDITOR || UNITY_WEBPLAYER
 using UnityEngine;
+#endif
 
 namespace ModestTree
 {
@@ -18,34 +21,43 @@ namespace ModestTree
             Log.Info("Loaded config file");
         }
 
+        static XmlDocument LoadXml(string resourceName)
+        {
+            try
+            {
+                var xml = new XmlDocument();
+
+#if UNITY_EDITOR || UNITY_WEBPLAYER
+                // Use Resources.Load so it works with web builds
+                var obj = Resources.Load(resourceName) as TextAsset;
+                xml.LoadXml(obj.text);
+#else
+                // For non-unity builds just assume it's in the starting directory
+                var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, resourceName + ".xml");
+                xml.Load(path);
+#endif
+                return xml;
+            }
+            catch (Exception)
+            {
+            }
+
+            return null;
+        }
+
         static void LoadConfigFile()
         {
             Util.Assert(_xml == null);
             Util.Assert(_xmlOverride == null);
 
-            try
+            _xml = LoadXml("core_config");
+
+            if (_xml == null)
             {
-                _xml = new XmlDocument();
-                // TODO: Change this to use resources.load so it works with web builds
-                _xml.Load( Application.dataPath + @"\core_config.xml" );
-            }
-            catch (Exception)
-            {
-                Log.Warn("No Assets/core_config.xml found.");
-                _xml = null;
+                Log.Warn("No core_config found.");
             }
 
-            try
-            {
-                _xmlOverride = new XmlDocument();
-                // TODO: Change this to use resources.load so it works with web builds
-                _xmlOverride.Load( Application.dataPath + @"\core_config_custom.xml" );
-            }
-            catch (Exception)
-            {
-                Log.Warn("No Assets/core_config_custom.xml found.");
-                _xmlOverride = null;
-            }
+            _xmlOverride = LoadXml("core_config_custom");
         }
 
         static bool TryGet<TValue>(XmlDocument xml, string identifier, ref TValue value)
