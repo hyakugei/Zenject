@@ -7,7 +7,7 @@ http://blog.sebaslab.com/ioc-container-for-unity3d-part-1/
 
 http://blog.sebaslab.com/ioc-container-for-unity3d-part-2/
 
-Examples and more documentation forthcoming.
+At some point I will add some more documentation here.  For now, if you are interested in using Zenject, please refer to the included Sample project for intended usage.  For an introduction on Dependency Injection Frameworks in general, I highly recommend Mark Seeman's book, "Dependency Injection in .NET".
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
