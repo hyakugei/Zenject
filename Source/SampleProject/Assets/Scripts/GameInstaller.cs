@@ -11,7 +11,7 @@ namespace ModestTree.Asteroids
         public Ship ship;
         public GuiHandler gui;
 
-        public void RegisterBindings(IContainer container)
+        public void RegisterBindings(DiContainer container)
         {
             container.Bind<IDependencyRoot>().AsSingle<GameRoot>();
 

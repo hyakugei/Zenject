@@ -9,7 +9,7 @@ namespace ModestTree.Asteroids
     {
         private IFactory<ShipState>[] _factories;
 
-        public ShipStateFactory(IContainer container)
+        public ShipStateFactory(DiContainer container)
         {
             _factories = new IFactory<ShipState>[(int) EShipState.Count]
             {

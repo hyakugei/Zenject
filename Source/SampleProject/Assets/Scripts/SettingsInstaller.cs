@@ -8,7 +8,7 @@ namespace ModestTree.Asteroids
     {
         public SettingsWrapper settings;
 
-        public void RegisterBindings(IContainer container)
+        public void RegisterBindings(DiContainer container)
         {
             container.Bind<ShipStateMoving.Settings>().AsSingle(settings.shipMoving);
             container.Bind<ShipStateDead.Settings>().AsSingle(settings.shipDead);
