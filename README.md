@@ -20,3 +20,7 @@ At some point I will add some more documentation here.  For now, if you are inte
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/svermeulen/zenject/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
