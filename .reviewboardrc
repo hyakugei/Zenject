@@ -1,6 +1,0 @@
-REVIEWBOARD_URL = 'https://rbcommons.com/s/ModestTree/'
-REPOSITORY = 'Zenject'
-GUESS_FIELDS = 1
-PUBLISH = 1
-BRANCH = 'develop'
-TARGET_GROUPS = 'editor'
