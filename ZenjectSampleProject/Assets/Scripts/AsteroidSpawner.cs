@@ -129,7 +129,6 @@ namespace ModestTree.Asteroids
 
         void SpawnNext()
         {
-            Debug.Log("SpawnNext");
             var asteroid = _asteroidFactory.Create();
 
             var attributes = _cachedAttributes.Dequeue();
